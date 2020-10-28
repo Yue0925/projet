@@ -1,0 +1,44 @@
+---
+title: "project"
+author: "Gérémi Bridonneau et Yue Zhang"
+lang: "fr"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+
+# 1 La transformation de Box-Cox
+
+## 1.
+
+Si $\lambda = 0$, $h_{\lambda}(y) = log\ y$, $\forall y>0$.
+
+On a $(1)$ $h_{\lambda}(y) = x^{'} \theta + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, \sigma I_n)$.
+
+(je ne sais pas comment expliquer compatible)
+
+
+## 2.
+
+## 3.
+
+## 4.
+
+## 5.
+
+
+# 2 Test de la méthode sur des données simulées
+
+
+
+# 3 Cas pratique
+
+
+
+# Conclusion
+
