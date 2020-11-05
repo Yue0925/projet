@@ -1,0 +1,220 @@
+---
+title: "project"
+author: "Yue Zhang et Gérémi Bridonneau"
+lang: "fr"
+output: 
+  pdf_document:
+    includes:
+      in_header: preamble.tex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+
+
+<!-------------------------------------- EX1 ------------------------------------------------------------------->
+<!-------------------------------------- -- -------------------------------------------------------------------->
+
+# 1 La transformation de Box-Cox
+
+## 1. (réfléchir un nom/titre)
+
+Si $\lambda = 0$, $h_{\lambda}(y) = log\ y$, $\forall y>0$.
+
+On a $(1)$ $h_{\lambda}(y) = x^{'} \theta + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, \sigma I_n)$.
+
+-- (mon idée de solution)
+
+La transformation $\tilde h_\lambda$ est valable seulement pour $y > 0$. De plus pour tout $\lambda \neq 0$, la transformation $\tilde h_\lambda$ est borné et donc la transformation ne peut pas être gaussienne. Pour $\lambda = 0$ on n'a pas ce problème grâce à la surjectivité du logarithme.
+
+Si toute les observations sont positives on peut quand même utiliser cette transformation car on perdra qu'une faible partie des données normalement dans la queue à gauche de la répartition. Par exemple si les données ne suivent pas une loi normale mais une loi beta de paramètre $\alpha=2,\beta=2.2$ et qu'on utilise la transformation de Box et Cox avec $\lambda=2$ on obtient:
+
+```{r}
+lambda <- 2
+a <- 2
+b <- 2.2
+plot({function (x) dbeta(x, a, b)})
+plot({function (x) (dbeta(x, a, b)^lambda - 1)/lambda}, -0.2, 1.2)
+```
+
+
+On voit qu'on a aucune valeur négative et que donc la gaussianisation n'est pas parfaite mais cette transformation reste raisonnable.
+
+
+## 2. Déterminer la fonction de vraisemblance
+
+Supposons que pour $\beta = (\lambda, \theta, \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres, on ait $h_\lambda(Y_i) = Z_i = x_i \theta + \varepsilon_i, \; \varepsilon_i \sim \mathcal{N}(0,\sigma^2)$, $\varepsilon_i$ suivent une loi gaussien i.i.d. Donc par la définition de vraisemblance:
+
+\begin{equation} \label{eq1}
+\begin{split}
+L(\lambda, \theta, \sigma^2; Y) & = \prod_{i=1}^{n} \pdv{F}{Y_i} \\
+ & = \prod_{i=1}^{n} \dfrac{1}{\sqrt{2\pi\sigma^2}} \exp(-\dfrac{(h_{\lambda}(Y_i)-x_i\theta)^2}{2\sigma^2}) \left|\pdv{h_{\lambda}(Y_i)}{Y_i}\right| \\
+ & = (\dfrac{1}{2\pi\sigma^2})^{\dfrac{n}{2}} \exp(- \dfrac{\sum_{i=1}^n (h_{\lambda}(Y_i)-x_i\theta)^2}{2\sigma^2}) \prod_{i=1}^{n} \left|\pdv{h_{\lambda}(Y_i)}{Y_i}\right| \\
+ & = (\dfrac{1}{2\pi\sigma^2})^{\dfrac{n}{2}} \exp(- \dfrac{(h_{\lambda}(Y_i)-x_i\theta)^{'} (h_{\lambda}(Y_i)-x_i\theta)}{2\sigma^2}) \prod_{i=1}^{n} \left|Y_i^{\lambda-1}\right|
+\end{split}
+\end{equation}
+
+Donc le terme $J(\lambda;Y) = \prod_{i=1}^{n} \left|\frac{\partial h_{\lambda}(Y_i)}{\partial Y_i}\right| = \prod_{i=1}^{n} \left|Y_i^{\lambda-1}\right|$, est la transformation de Jacobian de $h_{\lambda}(Y)-X\theta$ à $Y$.
+
+
+## 3. Estimation du maximum de vraisemblance
+
+A $\lambda$ fixé, on peut déterminer l'emv par estimation du maximum de vraisemblance. Donc tout d'abord, depuis l'équation \ref{eq1} on calcule le log-vraisemblance.
+
+\begin{equation} \label{eq2}
+\begin{split}
+\ell & = \log L(\lambda, \theta, \sigma^2; Y) \\
+& = - \dfrac{n}{2}\log(2\pi\sigma^2) - \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda}(Y)-X\theta)}{2\sigma^2} + \sum_{i=1}^n \log \left|Y_i^{\lambda-1} \right| \\
+& = -\dfrac{n}{2}\log(2\pi) -\dfrac{n}{2}\log(\sigma^2) -\dfrac{\norm{h_{\lambda}(Y)-X\theta}^2}{2\sigma^2} +(\lambda-1)\sum_{i=1}^n \log \left|Y_i \right| 
+\end{split}
+\end{equation}
+
+En suite, étant donnée que le log-vraisemblance $\ell$ l'équation \ref{eq2} est une transforamtion monotone de vralsemblance $L$ dans l'équation \ref{eq1}, on maximise log-vraisemblance $\ell$ en respectant $\theta$, $\sigma^2$ et $\lambda$, donc on obtient le premier ordre dérivation ci-dessous:
+
+\begin{equation} \label{eq3}
+\begin{split}
+\pdv{\ell}{\sigma^2} & = -\dfrac{n}{2} \dfrac{1}{\sigma^2} + \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda}(Y)-X\theta)}{2\sigma^4} = 0
+\end{split}
+\end{equation}
+
+Donc on a $\widehat{\sigma }^2 = \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda}(Y)-X\theta)}{n} = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n}$, avec $H = X(X^{'}X)^{-1}X^{'}$ et $I_n$ matrice identidé.
+
+\begin{equation} \label{eq4}
+\begin{split}
+\pdv{\ell}{\theta} & = -\dfrac{2(-X)^{'}(h_{\lambda}(Y)-X\theta)}{2\sigma^2} \\
+& = \dfrac{X^{'}(h_{\lambda}(Y)-X\theta)}{\sigma^2} = 0
+\end{split}
+\end{equation}
+
+Donc, $\widehat{\theta} = (X^{'}X)^{-1}X^{'}h_{\lambda}(Y)$, par $X^{'}h_{\lambda}(Y) = X^{'}X\theta$.
+
+Pour vérifier $L_{max}(\lambda)$, on remplace notre l'emv $\widehat{\sigma}^2$ et $\widehat{\theta}$ calculé par l'équation \ref{eq3} et \ref{eq4} dans log-vraisemblance $\ell$:
+
+\begin{equation} \label{eq5}
+\begin{split}
+L_{max}(\lambda) & := \ell = \log L(\lambda, \widehat{\theta}(\lambda), \widehat{\sigma}^2(\lambda)) \\
+ & = -\dfrac{n}{2}\log(\dfrac{\norm{h_{\lambda}(Y)-X\theta}^2}{n}) - \dfrac{\norm{h_{\lambda}(Y)-X\theta}^2 n}{2\norm{h_{\lambda}(Y)-X\theta}^2} + (\lambda-1)\sum_{i=1}^n \log\left|Y_i \right| - \dfrac{n}{2}\log(2\pi) \\
+  & = -\dfrac{n}{2}\log(\widehat{\sigma}^2(\lambda)) + (\lambda-1)\sum_{i=1}^n \log\left|Y_i \right| -\dfrac{n}{2} -\dfrac{n}{2}\log(2\pi)
+\end{split}
+\end{equation}
+
+Donc $a(n) = -\dfrac{n}{2} -\dfrac{n}{2}\log(2\pi)$ est bien une constante ne dépendant que $n$. Maintenant on calcule l'emv $\widehat{\lambda}$:
+
+\begin{equation} \label{eq6}
+\begin{split}
+\pdv{\ell}{\lambda} & = - \dfrac{2(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{2\sigma^2} + \sum_{i=1}^n \log\left|Y_i \right| = 0
+\end{split}
+\end{equation}
+
+Et 
+
+\begin{equation} \label{eq7}
+\begin{split}
+\pdv{L_{max}}{\lambda} & = -\dfrac{n}{2} \dfrac{1}{\widehat{\sigma}^2(\lambda)} \left|\pdv{\widehat{\sigma}^2(\lambda)}{\lambda} \right| + \sum_{i=1}^n \log\left|Y_i \right| \\
+ & = -\dfrac{n}{2} \dfrac{1}{\widehat{\sigma}^2(\lambda)} \dfrac{2(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{n} + \sum_{i=1}^n \log\left|Y_i \right| \\
+ & = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{\sigma^2}+ \sum_{i=1}^n \log\left|Y_i \right| = 0
+\end{split}
+\end{equation}
+
+On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance, donc on propose de trouver $\widehat{\lambda}$ qui maximize $L_{max}(\lambda)$ de l'équation \ref{eq5}, c'est à dire minimize $\widehat{\sigma}^2(\lambda)$. Par l'équation \ref{eq3}, on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{||h_{\lambda}(Y)-X\theta||^2}{n} = \dfrac{SCR}{n}$ est la somme de carrés résiduels divisée par $n$, donc on cherche l'emc (estimateur des moindres carrées)
+
+\begin{equation} \label{eq8}
+\begin{split}
+\widehat{\lambda} & = \argmin_{\lambda} \norm{h_{\lambda}(Y)-X\widehat{\theta}}^2
+\end{split}
+\end{equation}
+
+
+Pour répondre que l'emv est-il gaussien à distance finie? Je sais pas comment expliquer mais par le théorème du cours, l'emv est asymptotiquement normale non? emmm je vais réfléchir. genre la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
+
+
+\begin{equation} \label{eq9}
+\begin{split}
+\left[\dfrac{V_n(\beta)^{-1}}{n} \right]^{1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_n)
+\end{split}
+\end{equation}
+
+
+$V_n(\beta)^{-1}$ est l'information de Fisher.
+
+
+## 4.
+
+## 5.
+
+
+
+
+
+<!-------------------------------------- EX2 ------------------------------------------------------------------->
+<!-------------------------------------- -- -------------------------------------------------------------------->
+
+# 2 Test de la méthode sur des données simulées
+
+```{r echo=FALSE}
+lambda <- 0.3
+a <- 5
+b <- 1
+sig_squared <- 2
+n=50
+```
+
+## 1. 
+
+```{r echo=FALSE}
+set.seed(999)
+X_obs <- rnorm(n=50)
+Epsilon <- rnorm(n=50, mean=0, sd = sqrt(sig_squared))
+
+# Par la définition
+Z <- t(a + b%*%X_obs + Epsilon)
+# On considère que toutes les observations du jeu de données Y_i sont positives
+Y <- (lambda*Z +1)^(1/lambda)
+
+plot( sort(a + b%*%X_obs), sort(Z))
+```
+
+
+## 2.
+
+```{r echo=FALSE}
+X <- as.matrix(cbind(1, X_obs))
+Q = diag(1,n) - X%*%solve(t(X)%*%X)%*%t(X)
+
+tmp = rep(1, 50)
+Lmle = function(Z){
+  n = length(Z)
+  sig2 = (t(Z)%*%Q%*%Z) / n
+  -n/2 * log(sig2)
+}
+
+Lmin = function(lambda, Y) {
+  -(Lmle(Z) + (lambda-1) * tmp%*%log(abs(Y)) - n/2)
+}
+
+lambda_x <- seq(0,2,0.05)
+Vlmin = Vectorize(Lmin,"lambda")
+plot(lambda_x, Vlmin(lambda_x, Y))
+
+
+
+resopt = nlm(Lmin,Y=Y,p=2,hessian=TRUE)
+```
+
+
+
+
+<!-------------------------------------- EX3 ------------------------------------------------------------------->
+<!-------------------------------------- -- -------------------------------------------------------------------->
+# 3 Cas pratique
+
+
+
+
+
+# Conclusion
+
