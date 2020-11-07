@@ -116,15 +116,36 @@ Et
 \begin{split}
 \pdv{L_{max}}{\lambda} & = -\dfrac{n}{2} \dfrac{1}{\widehat{\sigma}^2(\lambda)} \left|\pdv{\widehat{\sigma}^2(\lambda)}{\lambda} \right| + \sum_{i=1}^n \log\left|Y_i \right| \\
  & = -\dfrac{n}{2} \dfrac{1}{\widehat{\sigma}^2(\lambda)} \dfrac{2(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{n} + \sum_{i=1}^n \log\left|Y_i \right| \\
- & = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{\sigma^2}+ \sum_{i=1}^n \log\left|Y_i \right| = 0
+ & = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\pdv{h_{\lambda}(Y)}{\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right| = 0
 \end{split}
 \end{equation}
 
-On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance, donc on propose de trouver $\widehat{\lambda}$ qui maximize $L_{max}(\lambda)$ de l'équation \ref{eq5}, c'est à dire minimize $\widehat{\sigma}^2(\lambda)$. Par l'équation \ref{eq3}, on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{||h_{\lambda}(Y)-X\theta||^2}{n} = \dfrac{SCR}{n}$ est la somme de carrés résiduels divisée par $n$, donc on cherche l'emc (estimateur des moindres carrées)
+On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance. Par l'équation \ref{eq3}, on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n} = \dfrac{SCR(\lambda)}{n}$ avec $H = X(X^{'}X)^{-1}X^{'}$, est la somme de carrés résiduels de variance $h_{\lambda}(Y^)$ divisée par $n$. Depuis l'équation \ref{eq7}, on peut continuer cette calculation en remplaçant $\widehat{\sigma}^2$, et pour rappel $h_{\lambda}(Y) = \dfrac{Y^{\lambda}-1}{\lambda}$:
 
 \begin{equation} \label{eq8}
 \begin{split}
-\widehat{\lambda} & = \argmin_{\lambda} \norm{h_{\lambda}(Y)-X\widehat{\theta}}^2
+\pdv{L_{max}}{\lambda} & = -\dfrac{n}{2} \dfrac{n}{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)} \dfrac{2h_{\lambda}(Y)^{'}(I_n - H)}{n} (\dfrac{Y^{\lambda}\log Y}{\lambda} - \dfrac{Y^{\lambda}-1}{\lambda^{2}}) + \sum_{i=1}^n \log\left|Y_i \right| \\
+ & = -n \dfrac{h_{\lambda}(Y)^{'} (I_n-H)}{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)} (\dfrac{Y^{\lambda}\log Y}{\lambda} - \dfrac{h_{\lambda}(Y)}{\lambda}) + \sum_{i=1}^n \log\left|Y_i \right| \\
+ & = -n \dfrac{h_{\lambda}(Y)^{'} (I_n-H) \lambda^{-1}Y^{\lambda}\log Y}{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)} + n \dfrac{ h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y) \lambda} + \sum_{i=1}^n \log\left|Y_i \right| \\
+ & = -n \dfrac{h_{\lambda}(Y)^{'} (I_n-H) u_{\lambda}(Y)}{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)} + \dfrac{n}{\lambda}+ \sum_{i=1}^n \log\left|Y_i \right| 
+\end{split}
+\end{equation}
+
+avec $u_{\lambda}(Y) = \lambda^{-1}Y^{\lambda}\log Y$. Le numérateur dans l'équation \ref{eq8} est la somme résiduelle des produits dans l'analyse de la covariance de $h_{\lambda}(Y)$ et $u_{\lambda}(Y)$. Maintenant on utilise la transformation normalisée afin de simplifier le résultat, on définit $z_{\lambda}(Y)$ ci-dessous:
+
+
+\begin{equation} \label{eq9}
+\begin{split}
+z_{\lambda}(Y) & = \dfrac{h_{\lambda}(Y)}{J(\lambda;Y)^{1/n}} \\
+ & = \dfrac{h_{\lambda}(Y)}{(\prod_{i=1}^n |Y_i|)^{\lambda-1/n}}
+\end{split}
+\end{equation}
+
+Donc $\widehat{\sigma}^2$ devient $\widehat{\sigma}^2(\lambda;z) = \dfrac{z_{\lambda}(Y)^{'} (I_n-H) z_{\lambda}(Y)}{n}= \dfrac{SCR(\lambda; z)}{n}$, $SCR(\lambda; z)$ est la somme des carrées résiduelle de $z_{\lambda}(Y)$. De plus, $L_{max} = -\dfrac{n}{2}\log(\widehat{\sigma}^2(\lambda;z)) + a(n)$, donc on propose de trouver $\widehat{\lambda}$ qui maximize $L_{max}(\lambda)$, c'est à dire minimize $\widehat{\sigma}^2(\lambda;z)$. Donc on cherche l'emc (estimateur des moindres carrées)
+
+\begin{equation} \label{eq10}
+\begin{split}
+\widehat{\lambda} & = \argmin_{\lambda} SCR(\lambda; z)
 \end{split}
 \end{equation}
 
@@ -132,7 +153,7 @@ On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\p
 Pour répondre que l'emv est-il gaussien à distance finie? Je sais pas comment expliquer mais par le théorème du cours, l'emv est asymptotiquement normale non? emmm je vais réfléchir. genre la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
 
 
-\begin{equation} \label{eq9}
+\begin{equation} \label{eq11}
 \begin{split}
 \left[\dfrac{V_n(\beta)^{-1}}{n} \right]^{1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_n)
 \end{split}
