@@ -160,10 +160,14 @@ Pour répondre que l'emv est-il gaussien à distance finie? Je sais pas comment 
 \end{equation}
 
 
-$V_n(\beta)^{-1}$ est l'information de Fisher.
+$V_n(\beta)^{-1}$ est la matrice de l'information de Fisher.
 
 
-## 4.
+## 4. Distribution asymptotique de l'emv
+
+
+Etant donné que l'emv est asymptotiquement normalement distribué, donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} \sim \mathcal{N}(0, 1)$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale.
+
 
 ## 5.
 
