@@ -189,7 +189,7 @@ où $\ddot{\ell}$ est la matrice Hessien $\ddot{\ell} = \dfrac{\partial^2 \ell}{
 
 \begin{equation} \label{eq14}
 \begin{split}
-H_n(\beta) & = \dfrac{\partial^2 L_{max}}{\partial \beta \partial \beta^{'}} \\
+\ddot{\ell}:= H_n(\beta) & = \dfrac{\partial^2 L_{max}}{\partial \beta \partial \beta^{'}} \\
  & = - \widehat{\sigma}^{-2}
 \begin{bmatrix}
 X^{'}X & -X^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| \\
@@ -222,21 +222,60 @@ On définit $A = (0, \dfrac{1}{\lambda_0}, 0)$, $\beta = (\theta, \lambda, \sigm
 
 $H_0: A\beta = 1$ contre $H_1: A\beta \neq 1$
 
-En utilisant la statistique de Wald, sous $H_0$ on a :
+Sous $H_0$, avec la delta méthode:
 
 \begin{equation} \label{eq16}
+\begin{split}
+\sqrt{n}(A\widehat\beta - 1) \rightarrow \mathcal{N}(0, AV_nA^{'})
+\end{split}
+\end{equation}
+
+\begin{equation} \label{eq17}
+\begin{split}
+T_n & = [AV_nA^{'}]^{-1/2}A(\widehat\beta - 1) \rightarrow \mathcal{N}(0, 1)
+\end{split}
+\end{equation}
+
+En utilisant la propriété de la statistique de Wald, $W$ est la carré de la norme de $T_n$ et sa loi asymptotique sous $H_0$ est:
+
+\begin{equation} \label{eq18}
 \begin{split}
 W & = n(A\widehat\beta - 1)(A\widehat V_n A^{'})^{-1}(A\widehat\beta - 1)^{'} \rightarrow \chi^2(1)
 \end{split}
 \end{equation}
 
-où $\widehat V_n = I_n(\widehat\beta)^{-1}$, et $W \geq 0$, la région de rejet est unilatère à droite de niveau asymptotique $\alpha$ donc est $\mathcal{R} = \left\{W > q_{1-\alpha}^{\chi^2(1)} \right\}$ avec $P_{(H_0)}(\mathcal{R}) \rightarrow \alpha$.
+où $\widehat V_n = I_n(\widehat\beta)^{-1}$, et $W \geq 0$, la région de rejet est unilatère à droite de niveau asymptotique $\alpha$ pour une hypothèse bilatère est $\mathcal{R} = \left\{W > q_{1-\alpha}^{\chi^2(1)} \right\}$ avec $P_{(H_0)}(\mathcal{R}) \rightarrow \alpha$.
 
 
-## 5.
+## 5. Test du rapport vraisemblance
 
+Par le théorème asymptotique du $RV$, sous $H_0$:
 
+\begin{equation} \label{eq19}
+\begin{split}
+TRV & = -2\log(RV) \rightarrow \chi^2(1)
+\end{split}
+\end{equation}
 
+$TRV \geq 0$, la région de rejet $\mathcal{R} = \left\{TRV > q_{1-\alpha}^{\chi^2(1)} \right\}$ du test de rapport de vraisemblances maximales est asymptotiquement de niveau $\alpha$, $P_{(H_0)}(\mathcal{R}) \rightarrow \alpha$.
+
+Par la définition de rapport de vraisemblance:
+
+\begin{equation} \label{eq20}
+\begin{split}
+RV & = \dfrac{L(\lambda_0; Y)}{L(\widehat\lambda; Y)}
+\end{split}
+\end{equation}
+
+où $L$ est la fonction de vraisemblance.
+
+\begin{equation} \label{eq21}
+\begin{split}
+TRV & = -2\log (\dfrac{L(\lambda_0; Y)}{L(\widehat\lambda; Y)}) \\
+ & = -2(\log L(\lambda_0; Y) - \log L(\widehat\lambda; Y)) \\
+ & = 2(L_{max}(\widehat\lambda; Y) - L_{max}(\lambda; Y))
+\end{split}
+\end{equation}
 
 
 <!-------------------------------------- EX2 ------------------------------------------------------------------->
