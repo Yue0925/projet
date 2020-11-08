@@ -206,7 +206,7 @@ $H_n(\beta)$ est bien une matrice définie négative. Etant donnée la distribut
 \end{split}
 \end{equation}
 
-où $H_n(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right|^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| + \left|\dfrac{\partial^2 h_{\lambda}(Y)}{\partial^2 \lambda} \right| (I_n-H)h_{\lambda}(Y)$.
+où $H_n(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \dfrac{\left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right|^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| + \left|\dfrac{\partial^2 h_{\lambda}(Y)}{\partial^2 \lambda} \right| h_{\lambda}(Y)^{'}(I_n-H)}{-\widehat \sigma^2}$.
 
 
 ### Intervalle de confiance
@@ -217,6 +217,20 @@ L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alph
 
 
 ### Test de Wald
+
+On définit $A = (0, \dfrac{1}{\lambda_0}, 0)$, $\beta = (\theta, \lambda, \sigma^2)^{'}$
+
+$H_0: A\beta = 1$ contre $H_1: A\beta \neq 1$
+
+En utilisant la statistique de Wald, sous $H_0$ on a :
+
+\begin{equation} \label{eq16}
+\begin{split}
+W & = n(A\widehat\beta - 1)(A\widehat V_n A^{'})^{-1}(A\widehat\beta - 1)^{'} \rightarrow \chi^2(1)
+\end{split}
+\end{equation}
+
+où $\widehat V_n = I_n(\widehat\beta)^{-1}$, et $W \geq 0$, la région de rejet est unilatère à droite de niveau asymptotique $\alpha$ donc est $\mathcal{R} = \left\{W > q_{1-\alpha}^{\chi^2(1)} \right\}$ avec $P_{(H_0)}(\mathcal{R}) \rightarrow \alpha$.
 
 
 ## 5.
