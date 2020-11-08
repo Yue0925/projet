@@ -47,7 +47,7 @@ On voit qu'on a aucune valeur négative et que donc la gaussianisation n'est pas
 
 ## 2. Déterminer la fonction de vraisemblance
 
-Supposons que pour $\beta = (\lambda, \theta, \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres, on ait $h_\lambda(Y_i) = Z_i = x_i \theta + \varepsilon_i, \; \varepsilon_i \sim \mathcal{N}(0,\sigma^2)$, $\varepsilon_i$ suivent une loi gaussien i.i.d. Donc par la définition de vraisemblance:
+Supposons que pour $\beta = (\theta, \lambda, \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres, on ait $h_\lambda(Y_i) = Z_i = x_i \theta + \varepsilon_i, \; \varepsilon_i \sim \mathcal{N}(0,\sigma^2)$, $\varepsilon_i$ suivent une loi gaussien i.i.d. Donc par la définition de vraisemblance:
 
 \begin{equation} \label{eq1}
 \begin{split}
@@ -155,18 +155,68 @@ Pour répondre que l'emv est-il gaussien à distance finie? Je sais pas comment 
 
 \begin{equation} \label{eq11}
 \begin{split}
-\left[\dfrac{V_n(\beta)^{-1}}{n} \right]^{1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_n)
+\left[\dfrac{I_n(\beta)^{-1}}{n} \right]^{1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_n)
 \end{split}
 \end{equation}
 
 
-$V_n(\beta)^{-1}$ est la matrice de l'information de Fisher.
+$I_n(\beta)^{-1}$ est la matrice de l'information de Fisher.
 
 
 ## 4. Distribution asymptotique de l'emv
 
+### Estimer la variance de $\widehat{\lambda}$
 
-Etant donné que l'emv est asymptotiquement normalement distribué, donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} \sim \mathcal{N}(0, 1)$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale. La distribution est symétrique par rapport à 0, donc l'IC est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$.
+Soit $\widehat{\beta}$ l'emv asymptotiquement normal, 
+
+\begin{equation} \label{eq12}
+\begin{split}
+\sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_n(\beta)^{-1}) \\
+\widehat{\beta} \sim \mathcal{N}(\beta, I_n(\beta)^{-1})
+\end{split}
+\end{equation}
+
+Par la définition, la matrice de l'information de Fisher est écrite ci-dessous:
+
+\begin{equation} \label{eq13}
+\begin{split}
+I_n(\beta) & =\EX_{\beta}[\dot{\ell} \dot{\ell^{'}}] \\
+ & = \EX_{\beta}[- \ddot{\ell}]
+\end{split}
+\end{equation}
+
+où $\ddot{\ell}$ est la matrice Hessien $\ddot{\ell} = \dfrac{\partial^2 \ell}{\partial \beta \partial \beta^{'}}$ (pour rappelle que on a définit $\beta = (\theta, \lambda,  \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres). En particulier, on n'a pas forcément besoin d'estimer $\sigma^2$ simultanément avec $\theta$ et $\lambda$, donc pour simplifier les calculs, on décide de calculer la matrice Hessien de $L_{max}(\lambda)$. Dans l'équation \ref{eq7}, on a calculé $\dfrac{\partial L_{max}}{\partial \lambda} = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\dfrac{\partial h_{\lambda}(Y)}{\partial\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right|$, et on obtient sans souci $\dfrac{\partial L_{max}}{\partial \theta} = \dfrac{X^{'}(h_{\lambda}(Y)- X\theta)}{\widehat{\sigma}^2}$.
+
+\begin{equation} \label{eq14}
+\begin{split}
+H_n(\beta) & = \dfrac{\partial^2 L_{max}}{\partial \beta \partial \beta^{'}} \\
+ & = - \widehat{\sigma}^{-2}
+\begin{bmatrix}
+X^{'}X & -X^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| \\
+- \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| X & \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right|^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| + \left|\dfrac{\partial^2 h_{\lambda}(Y)}{\partial^2 \lambda} \right| (h_{\lambda}(Y) - X\theta)
+\end{bmatrix}
+\end{split}
+\end{equation}
+
+$H_n(\beta)$ est bien une matrice définie négative. Etant donnée la distribution asymptotique normale de l'emv, on peut concluire que $\widehat{Var(\widehat\beta)} = - [H_n(\widehat{\beta})]^{-1}$, maintenant on calcul $\widehat{Var(\widehat \lambda)}$:
+
+\begin{equation} \label{eq15}
+\begin{split}
+\widehat{Var(\widehat{\lambda)}} & = - H_n(\widehat \lambda)^{-1}
+\end{split}
+\end{equation}
+
+où $H_n(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right|^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| + \left|\dfrac{\partial^2 h_{\lambda}(Y)}{\partial^2 \lambda} \right| (I_n-H)h_{\lambda}(Y)$.
+
+
+### Intervalle de confiance
+
+Etant donné que l'emv est asymptotiquement normalement distribué, donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} \sim \mathcal{N}(0, I_n)$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale. La distribution est symétrique par rapport à 0, donc l'IC estimateur $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$.
+
+L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation \ref{eq15}.
+
+
+### Test de Wald
 
 
 ## 5.
