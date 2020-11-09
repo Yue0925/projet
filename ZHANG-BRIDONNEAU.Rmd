@@ -273,7 +273,9 @@ où $L$ est la fonction de vraisemblance.
 \begin{split}
 TRV & = -2\log (\dfrac{L(\lambda_0; Y)}{L(\widehat\lambda; Y)}) \\
  & = -2(\log L(\lambda_0; Y) - \log L(\widehat\lambda; Y)) \\
- & = 2(L_{max}(\widehat\lambda; Y) - L_{max}(\lambda; Y))
+ & = 2(L_{max}(\widehat\lambda; Y) - L_{max}(\lambda; Y)) \\
+ & = 2(-\dfrac{n}{2}\log(\widehat\sigma^2(\widehat\lambda)) + \dfrac{n}{2}\log(\widehat\sigma^2(\lambda))) \\
+ & = n\log(\dfrac{\widehat\sigma^2(\lambda)}{\widehat\sigma^2(\widehat\lambda)})
 \end{split}
 \end{equation}
 
