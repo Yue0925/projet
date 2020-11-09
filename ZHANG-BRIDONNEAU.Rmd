@@ -218,21 +218,21 @@ L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alph
 
 ### Test de Wald
 
-On définit $A = (0, \dfrac{1}{\lambda_0}, 0)$, $\beta = (\theta, \lambda, \sigma^2)^{'}$
+On définit $A = [0, 1, 0]$, $\beta = (\theta, \lambda, \sigma^2)^{'}$, $\beta_0 = (\theta_0, \lambda_0, \sigma_0^2)^{'}$
 
-$H_0: A\beta = 1$ contre $H_1: A\beta \neq 1$
+$H_0: A(\beta - \beta_0) = 0$ contre $H_1: A(\beta-\beta_0) \neq 0$
 
 Sous $H_0$, avec la delta méthode:
 
 \begin{equation} \label{eq16}
 \begin{split}
-\sqrt{n}(A\widehat\beta - 1) \rightarrow \mathcal{N}(0, AV_nA^{'})
+\sqrt{n}(A\widehat\beta - A\beta_0) \rightarrow \mathcal{N}(0, AV_nA^{'})
 \end{split}
 \end{equation}
 
 \begin{equation} \label{eq17}
 \begin{split}
-T_n & = [AV_nA^{'}]^{-1/2}A(\widehat\beta - 1) \rightarrow \mathcal{N}(0, 1)
+T_n & = [AV_nA^{'}]^{-1/2}A(\widehat\beta - \beta_0) \rightarrow \mathcal{N}(0, 1)
 \end{split}
 \end{equation}
 
@@ -240,7 +240,7 @@ En utilisant la propriété de la statistique de Wald, $W$ est la carré de la n
 
 \begin{equation} \label{eq18}
 \begin{split}
-W & = n(A\widehat\beta - 1)(A\widehat V_n A^{'})^{-1}(A\widehat\beta - 1)^{'} \rightarrow \chi^2(1)
+W & = n(A\widehat\beta - A\beta_0)(A\widehat V_n A^{'})^{-1}(A\widehat\beta - A\beta_0)^{'} \rightarrow \chi^2(1)
 \end{split}
 \end{equation}
 
@@ -289,19 +289,24 @@ TRV & = -2\log (\dfrac{L(\lambda_0; Y)}{L(\widehat\lambda; Y)}) \\
 lambda <- 0.3
 a <- 5
 b <- 1
-sig_squared <- 2
+variance <- 2
 n=50
 ```
 
 ## 1. 
 
+La condition de convergence indiquée dans la section 1 est-elle vérifiée?
+
+
 ```{r echo=FALSE}
 set.seed(999)
-X_obs <- rnorm(n=50)
-Epsilon <- rnorm(n=50, mean=0, sd = sqrt(sig_squared))
+X_obs <- rnorm(n)
+Epsilon <- rnorm(n=50, mean=0, sd = sqrt(variance))
+
 
 # Par la définition
 Z <- t(a + b%*%X_obs + Epsilon)
+
 # On considère que toutes les observations du jeu de données Y_i sont positives
 Y <- (lambda*Z +1)^(1/lambda)
 
