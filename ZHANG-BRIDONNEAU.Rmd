@@ -1,11 +1,13 @@
 ---
 title: "project"
 author: "Yue Zhang et Gérémi Bridonneau"
-lang: "fr"
-output: 
+lang: fr
+output:
   pdf_document:
     includes:
       in_header: preamble.tex
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -63,7 +65,7 @@ Donc le terme $J(\lambda;Y) = \prod_{i=1}^{n} \left|\frac{\partial h_{\lambda}(Y
 
 ## 3. Estimation du maximum de vraisemblance
 
-A $\lambda$ fixé, on peut déterminer l'emv par estimation du maximum de vraisemblance. Donc tout d'abord, depuis l'équation \ref{eq1} on calcule le log-vraisemblance.
+A $\lambda$ fixé, on souhaite déterminer l'estimateur du maximum de vraisemblance $\widehat\theta(\lambda)$ et $\widehat\sigma^2(\lambda)$. Donc tout d'abord, depuis l'équation \ref{eq1} on calcule la log-vraisemblance.
 
 \begin{equation} \label{eq2}
 \begin{split}
@@ -73,7 +75,7 @@ A $\lambda$ fixé, on peut déterminer l'emv par estimation du maximum de vraise
 \end{split}
 \end{equation}
 
-En suite, étant donnée que le log-vraisemblance $\ell$ l'équation \ref{eq2} est une transforamtion monotone de vralsemblance $L$ dans l'équation \ref{eq1}, on maximise log-vraisemblance $\ell$ en respectant $\theta$, $\sigma^2$ et $\lambda$, donc on obtient le premier ordre dérivation ci-dessous:
+Ensuite, étant donné que la log-vraisemblance $\ell$ l'équation \ref{eq2} est une transformation monotone de la vraisemblance $L$ dans l'équation \ref{eq1}, on maximise la log-vraisemblance $\ell$ respectivement pour $\theta$, $\sigma^2$ et $\lambda$, donc on obtient le premier ordre dérivation ci-dessous:
 
 \begin{equation} \label{eq3}
 \begin{split}
@@ -81,7 +83,7 @@ En suite, étant donnée que le log-vraisemblance $\ell$ l'équation \ref{eq2} e
 \end{split}
 \end{equation}
 
-Donc on a $\widehat{\sigma }^2 = \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda}(Y)-X\theta)}{n} = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n}$, avec $H = X(X^{'}X)^{-1}X^{'}$ et $I_n$ matrice identidé.
+Donc on a $\widehat{\sigma }^2 = \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda}(Y)-X\theta)}{n} = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n}$, avec $H = X(X^{'}X)^{-1}X^{'}$ et $I_n$ matrice identité.
 
 \begin{equation} \label{eq4}
 \begin{split}
@@ -92,7 +94,7 @@ Donc on a $\widehat{\sigma }^2 = \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda
 
 Donc, $\widehat{\theta} = (X^{'}X)^{-1}X^{'}h_{\lambda}(Y)$, par $X^{'}h_{\lambda}(Y) = X^{'}X\theta$.
 
-Pour vérifier $L_{max}(\lambda)$, on remplace notre l'emv $\widehat{\sigma}^2$ et $\widehat{\theta}$ calculé par l'équation \ref{eq3} et \ref{eq4} dans log-vraisemblance $\ell$:
+Pour vérifier la formule avec $L_{max}(\lambda)$, on remplace nos emv $\widehat{\sigma}^2$ et $\widehat{\theta}$ calculés dans les équations \ref{eq3} et \ref{eq4} dans la log-vraisemblance $\ell$:
 
 \begin{equation} \label{eq5}
 \begin{split}
@@ -102,7 +104,7 @@ L_{max}(\lambda) & := \ell = \log L(\lambda, \widehat{\theta}(\lambda), \widehat
 \end{split}
 \end{equation}
 
-Donc $a(n) = -\dfrac{n}{2} -\dfrac{n}{2}\log(2\pi)$ est bien une constante ne dépendant que $n$. Maintenant on calcule l'emv $\widehat{\lambda}$:
+Donc $a(n) = -\dfrac{n}{2} -\dfrac{n}{2}\log(2\pi)$ qui est bien une constante ne dépendant que de $n$. Maintenant on calcule l'emv $\widehat{\lambda}$:
 
 \begin{equation} \label{eq6}
 \begin{split}
