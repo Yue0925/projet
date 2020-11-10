@@ -1,8 +1,8 @@
 ---
 title: "project"
 author: "Yue Zhang et Gérémi Bridonneau"
-lang: fr
-output:
+lang: "fr"
+output: 
   pdf_document:
     includes:
       in_header: preamble.tex
@@ -75,7 +75,7 @@ A $\lambda$ fixé, on souhaite déterminer l'estimateur du maximum de vraisembla
 \end{split}
 \end{equation}
 
-Ensuite, étant donné que la log-vraisemblance $\ell$ l'équation \ref{eq2} est une transformation monotone de la vraisemblance $L$ dans l'équation \ref{eq1}, on maximise la log-vraisemblance $\ell$ respectivement pour $\theta$, $\sigma^2$ et $\lambda$, donc on obtient le premier ordre dérivation ci-dessous:
+Ensuite, étant donné que la log-vraisemblance $\ell$ l'équation (\ref{eq2}) est une transformation monotone de la vraisemblance $L$ dans l'équation (\ref{eq1}), on maximise la log-vraisemblance $\ell$ respectivement pour $\theta$, $\sigma^2$ et $\lambda$, donc on obtient le premier ordre dérivation ci-dessous:
 
 \begin{equation} \label{eq3}
 \begin{split}
@@ -94,7 +94,7 @@ Donc on a $\widehat{\sigma }^2 = \dfrac{(h_{\lambda}(Y)-X\theta)^{'} (h_{\lambda
 
 Donc, $\widehat{\theta} = (X^{'}X)^{-1}X^{'}h_{\lambda}(Y)$, par $X^{'}h_{\lambda}(Y) = X^{'}X\theta$.
 
-Pour vérifier la formule avec $L_{max}(\lambda)$, on remplace nos emv $\widehat{\sigma}^2$ et $\widehat{\theta}$ calculés dans les équations \ref{eq3} et \ref{eq4} dans la log-vraisemblance $\ell$:
+Pour vérifier la formule avec $L_{max}(\lambda)$, on remplace nos emv $\widehat{\sigma}^2$ et $\widehat{\theta}$ calculés dans les équations (\ref{eq3}) et (\ref{eq4}) dans la log-vraisemblance $\ell$:
 
 \begin{equation} \label{eq5}
 \begin{split}
@@ -122,7 +122,7 @@ Et
 \end{split}
 \end{equation}
 
-On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance. Par l'équation \ref{eq3}, on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n} = \dfrac{SCR(\lambda)}{n}$ avec $H = X(X^{'}X)^{-1}X^{'}$, est la somme de carrés résiduels de variance $h_{\lambda}(Y^)$ divisée par $n$. Depuis l'équation \ref{eq7}, on peut continuer cette calculation en remplaçant $\widehat{\sigma}^2$, et pour rappel $h_{\lambda}(Y) = \dfrac{Y^{\lambda}-1}{\lambda}$:
+On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance. Par l'équation (\ref{eq3}), on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n} = \dfrac{SCR(\lambda)}{n}$ avec $H = X(X^{'}X)^{-1}X^{'}$, est la somme de carrés résiduels de variance $h_{\lambda}(Y^)$ divisée par $n$. Depuis l'équation (\ref{eq7}), on peut continuer cette calculation en remplaçant $\widehat{\sigma}^2$, et pour rappel $h_{\lambda}(Y) = \dfrac{Y^{\lambda}-1}{\lambda}$:
 
 \begin{equation} \label{eq8}
 \begin{split}
@@ -133,7 +133,7 @@ On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\p
 \end{split}
 \end{equation}
 
-avec $u_{\lambda}(Y) = \lambda^{-1}Y^{\lambda}\log Y$. Le numérateur dans l'équation \ref{eq8} est la somme résiduelle des produits dans l'analyse de la covariance de $h_{\lambda}(Y)$ et $u_{\lambda}(Y)$. Maintenant on utilise la transformation normalisée afin de simplifier le résultat, on définit $z_{\lambda}(Y)$ ci-dessous:
+avec $u_{\lambda}(Y) = \lambda^{-1}Y^{\lambda}\log Y$. Le numérateur dans l'équation (\ref{eq8}) est la somme résiduelle des produits dans l'analyse de la covariance de $h_{\lambda}(Y)$ et $u_{\lambda}(Y)$. Maintenant on utilise la transformation normalisée afin de simplifier le résultat, on définit $z_{\lambda}(Y)$ ci-dessous:
 
 
 \begin{equation} \label{eq9}
@@ -187,7 +187,7 @@ I_n(\beta) & =\EX_{\beta}[\dot{\ell} \dot{\ell^{'}}] \\
 \end{split}
 \end{equation}
 
-où $\ddot{\ell}$ est la matrice Hessien $\ddot{\ell} = \dfrac{\partial^2 \ell}{\partial \beta \partial \beta^{'}}$ (pour rappelle que on a définit $\beta = (\theta, \lambda,  \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres). En particulier, on n'a pas forcément besoin d'estimer $\sigma^2$ simultanément avec $\theta$ et $\lambda$, donc pour simplifier les calculs, on décide de calculer la matrice Hessien de $L_{max}(\lambda)$. Dans l'équation \ref{eq7}, on a calculé $\dfrac{\partial L_{max}}{\partial \lambda} = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\dfrac{\partial h_{\lambda}(Y)}{\partial\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right|$, et on obtient sans souci $\dfrac{\partial L_{max}}{\partial \theta} = \dfrac{X^{'}(h_{\lambda}(Y)- X\theta)}{\widehat{\sigma}^2}$.
+où $\ddot{\ell}$ est la matrice Hessien $\ddot{\ell} = \dfrac{\partial^2 \ell}{\partial \beta \partial \beta^{'}}$ (pour rappelle que on a définit $\beta = (\theta, \lambda,  \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres). En particulier, on n'a pas forcément besoin d'estimer $\sigma^2$ simultanément avec $\theta$ et $\lambda$, donc pour simplifier les calculs, on décide de calculer la matrice Hessien de $L_{max}(\lambda)$. Dans l'équation (\ref{eq7}), on a calculé $\dfrac{\partial L_{max}}{\partial \lambda} = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\dfrac{\partial h_{\lambda}(Y)}{\partial\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right|$, et on obtient sans souci $\dfrac{\partial L_{max}}{\partial \theta} = \dfrac{X^{'}(h_{\lambda}(Y)- X\theta)}{\widehat{\sigma}^2}$.
 
 \begin{equation} \label{eq14}
 \begin{split}
@@ -215,7 +215,7 @@ où $H_n(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \dfrac{\lef
 
 Etant donné que l'emv est asymptotiquement normalement distribué, donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} \sim \mathcal{N}(0, I_n)$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale. La distribution est symétrique par rapport à 0, donc l'IC estimateur $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$.
 
-L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation \ref{eq15}.
+L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation (\ref{eq15}).
 
 
 ### Test de Wald
@@ -288,55 +288,105 @@ TRV & = -2\log (\dfrac{L(\lambda_0; Y)}{L(\widehat\lambda; Y)}) \\
 # 2 Test de la méthode sur des données simulées
 
 ```{r echo=FALSE}
-lambda <- 0.3
+# Initialisation vars
+lambda_ <- 0.3
 a <- 5
 b <- 1
 variance <- 2
 n=50
 ```
 
-## 1. 
+## 1. Modélisation la regression linéaire simple
 
-La condition de convergence indiquée dans la section 1 est-elle vérifiée?
+### Condition convergence
 
+La condition de convergence indiquée dans la section 1 est-elle vérifiée? (je ne sais pas)
+
+### Estimer regression linéaire simple
+
+Le modèle linéaire simple donc est $z_i = \mu + \theta x_i + \sigma\varepsilon_i$, $\varepsilon_i \sim \mathcal{N}(0, 1)$ i.i.d. Le plan d'expérience $X$ est en taille $[n,p]$ i.e. $[50 \times 2]$, et $\widehat\theta = (X^{'}X)^{-1}X^{'}Z$, $\widehat\sigma^2 = \dfrac{1}{n-p} ||Z-X\widehat\theta ||^2$.
+
+Par la définition, $\dfrac{y_i^{\lambda}-1}{\lambda} = h_{\lambda}(y_i) = z_i$, $y_i = (\lambda z_i+1)^{1/\lambda}$.
 
 ```{r echo=FALSE}
+#Q1
 set.seed(999)
-X_obs <- rnorm(n)
+X_obs <- rnorm(n) #loi gaussien centrée réduite
 Epsilon <- rnorm(n=50, mean=0, sd = sqrt(variance))
-
-
 # Par la définition
-Z <- t(a + b%*%X_obs + Epsilon)
-
+Z <- t(a + b%*%X_obs + Epsilon) #vector
 # On considère que toutes les observations du jeu de données Y_i sont positives
-Y <- (lambda*Z +1)^(1/lambda)
+Y <- (lambda_*Z +1)^(1/lambda_)
+X <- as.matrix(cbind(1, X_obs))
 
-plot( sort(a + b%*%X_obs), sort(Z))
+# Estimer la regression linéair simple
+theta_est = solve(t(X)%*%X)%*% t(X)%*%Z
+p = ncol(X) #2
+sigma_est = sqrt(sum( (X%*%theta_est -Z)^2 )/(n-p))
+
+{plot(Z, (X%*%theta_est), xlab = "vars observées", ylab = "vars ajustées", main = "Pour Z")
+abline(0,1)}
+
+{plot(Y, ((X%*%theta_est)*lambda_+1)^{1/lambda_}, xlab = "vars observées", ylab = "vars ajustées", main = "Pour Y")
+abline(0,1)}
+
 ```
+
+
+En Traçant la profondeur ajustée en fonction de la profondeur observée, on peut observer que le modèle n'est pas bien ajustée, les points s’allongent autour de la première bissectrice, mais les ajustements parfois ne sont pas proches des valeurs observées, donc ce qui implique aussi les bruts résidus fortes.
+
+
+### Etude les résidus
+
+Par la définition, les résidus $\widehat\varepsilon = Z-X\widehat\theta$. Et les résidus studentisés donc est $t_i = \dfrac{\widehat\varepsilon_i}{\widehat\sigma \sqrt{1-h_{i,i}}}$ où $h_{i,i}$ sont les éléments diagonaux de $H = X(X^{'}X)^{-1}X^{'}$.
+
+```{r echo=FALSE}
+#Etudier les résidus 
+residus <- Z - X%*%theta_est
+{plot(X%*%theta_est, residus, xlab = "vars ajustées", ylab = "les résidus",main="résidus bruts")
+abline(0,0)
+abline(2,0, col="red")
+abline(-2,0, col="red")
+}
+#residus_stud <- residus/(sigma_est * sqrt(1-H_x))
+#points(X%*%theta_est,residus,main="différents résidus")
+#abline(h=2,lty=2)
+#abline(h=-2,lty=2)
+```
+
+
+On voit que les résidus bruts sont fortes parce que les valeurs observées ne sont pas elles-mêmes proches de 0 et estimées avec une petite précision. La plupart d'eux sont raisonnablement compris entre $-2$ et $2$ sauf quatres points, en respectant la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
 
 
 ## 2.
 
 ```{r echo=FALSE}
+#Q2
+# Créer la matrice X du plan d'expérience
 X <- as.matrix(cbind(1, X_obs))
-Q = diag(1,n) - X%*%solve(t(X)%*%X)%*%t(X)
-
-tmp = rep(1, 50)
+# Interprétation les codes
+Q = diag(1,n) - X%*%solve(t(X)%*%X)%*%t(X) 
 Lmle = function(Z){
   n = length(Z)
   sig2 = (t(Z)%*%Q%*%Z) / n
   -n/2 * log(sig2)
 }
+```
 
-Lmin = function(lambda, Y) {
-  -(Lmle(Z) + (lambda-1) * tmp%*%log(abs(Y)) - n/2)
+
+La variable $Q$ est $(I_n-H)$, où $I_n$ est la matrice identidé de taille $50\times 50$, $H = X(X^{'}X)^{-1}X^{'}$. Le variable $sig2$ égale à $\dfrac{h_{\lambda}(Y)^{'}(I_n-H)h_{\lambda}(Y)}{n}$ qui est exactement $\widehat\sigma^2$ où on a démontré dans l'équation (\ref{eq3}). La fonction $Lmle$ retourne le terme $-\dfrac{n}{2}\log(\widehat\sigma^2)$.
+
+
+```{r echo=FALSE}
+# Coder la fonction lmin(lambda, Y) qui calcule −Lmax.
+vec1 = rep(1, 50)
+Lmin = function(lambda, Y=Y) {
+  -Lmle(Z) + (1-lambda) * vec1%*%log(abs(Y)) + n/2 + (n/2)*log(2*pi)
 }
-
-lambda_x <- seq(0,2,0.05)
+# Tracer −Lmax
+lambdas <- seq(0,2,0.01)
 Vlmin = Vectorize(Lmin,"lambda")
-plot(lambda_x, Vlmin(lambda_x, Y))
-
+plot(lambdas, Vlmin(lambdas, Y))
 
 
 resopt = nlm(Lmin,Y=Y,p=2,hessian=TRUE)
