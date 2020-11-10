@@ -340,6 +340,7 @@ En Traçant la profondeur ajustée en fonction de la profondeur observée, on pe
 
 Par la définition, les résidus $\widehat\varepsilon = Z-X\widehat\theta$. Et les résidus studentisés donc est $t_i = \dfrac{\widehat\varepsilon_i}{\widehat\sigma \sqrt{1-h_{i,i}}}$ où $h_{i,i}$ sont les éléments diagonaux de $H = X(X^{'}X)^{-1}X^{'}$.
 
+
 ```{r echo=FALSE}
 #Etudier les résidus 
 residus <- Z - X%*%theta_est
@@ -358,7 +359,7 @@ abline(-2,0, col="red")
 On voit que les résidus bruts sont fortes parce que les valeurs observées ne sont pas elles-mêmes proches de 0 et estimées avec une petite précision. La plupart d'eux sont raisonnablement compris entre $-2$ et $2$ sauf quatres points, en respectant la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
 
 
-## 2.
+## 2. Mise en oeuvre le calcul $\widehat\lambda$
 
 ```{r echo=FALSE}
 #Q2
@@ -387,21 +388,72 @@ Lmin = function(lambda, Y=Y) {
 lambdas <- seq(0,2,0.01)
 Vlmin = Vectorize(Lmin,"lambda")
 plot(lambdas, Vlmin(lambdas, Y))
+```
+
+## 3. Calcul $\widehat\lambda$ et $\widehat{Var(\widehat\lambda)}$
+
+```{r echo=FALSE}
+resopt = nlm(Lmin,Y=Y,p=0,hessian=TRUE)
+resopt
+-1/resopt$hessian
+```
+
+En utilisant la fonction $nlm$, on obtient la valeur maximum de $L_{max}$ est $-resopt\$minimum$, $\widehat\lambda$ est $resopt\$estimate$. Comme démontré dans l'équation (\ref{eq15}), la variance de $\widehat\lambda$ est l'inverse de hessian fois $-1$.
 
 
-resopt = nlm(Lmin,Y=Y,p=2,hessian=TRUE)
+## 4. 
+
+### Intervale de confiance
+
+Comme on a montré dans le premier section, l'intervalle de confiance pour $\lambda$ est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$ au niveau asymptotiquement $1-\alpha$. Ici on fixe $\alpha$ à $0.05$, donc $q_{1-\alpha/2}$ est $2.009575$, donc on obtien l'IC $[,]$.
+
+```{r echo=FALSE}
+alpha <- 0.05
+q <- qt(1-alpha/2, n-1, lower.tail = TRUE)
+#lam_chap
+#var_chap
+#lam_chap - q*sqrt(var_chap/n) #lower bound
+#lam_chap + q*sqrt(var_chap/n) #upper bound
 ```
 
 
+### Test de Wald
+
+
+
+## 5. Test de rapport de vraisemblance
+
+
+## 6.
+
+```{r echo=FALSE}
+#library(MASS)
+
+```
 
 
 <!-------------------------------------- EX3 ------------------------------------------------------------------->
 <!-------------------------------------- -- -------------------------------------------------------------------->
 # 3 Cas pratique
 
+```{r echo=FALSE}
+# Lire les données, vérfier que le data.frame obtenu comporte 27 observations.
+df = read.csv2("NbCycleRupture.csv")
+head(df)
+dim(df)
+str(df) #structure de data frame
+```
 
+## 1. Modèle regression linéaire multiple 
+
+On définit le modèle linéaire multiple ($M1$) $y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d.
 
 
 
 # Conclusion
+
+```{r echo=FALSE}
+#library(knitr)
+#purl("ZHANG-BRIDONNEAU.Rmd")
+```
 
