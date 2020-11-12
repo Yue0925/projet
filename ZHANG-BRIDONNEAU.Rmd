@@ -301,7 +301,33 @@ n=50
 
 ### Condition convergence
 
-La condition de convergence indiquée dans la section 1 est-elle vérifiée? (je ne sais pas)
+La condition de convergence indiquée dans la section 1 est bien vérifiée.
+
+
+En effet on a que si $x_1, x_2, \dots \stackrel{i.i.d}\sim \mathcal N(0, 1)$,
+
+\begin{equation}
+\begin{split}
+  \frac{X'X}n = \frac 1 n 
+                \begin{bmatrix}
+                  1   & 1   & \dots & 1  \\
+                  x_1 & x_2 & \dots & x_n 
+                \end{bmatrix}
+                \begin{bmatrix}
+                  1     & x_1  \\
+                  1     & x_2  \\
+                  \vdots & \vdots\\
+                  1     & x_n  \\
+                \end{bmatrix}
+                = \begin{bmatrix}
+                    1 & \frac 1 n \sum_{i=1}^n x_i\\
+                    \frac 1 n \sum_{i=1}^n x_i & \frac 1 n \sum_{i=1}^n {x_i}^2\\
+                  \end{bmatrix}
+\end{split}
+\end{equation}
+
+On a de plus $\mathbb E[{x_i}^2] = \mathrm{Var}(x_i) - \mathbb E[x_i]^2 = 1$.
+Ainsi d'après la loi des grands nombres on a $(X'X)/n$ qui converge vers la matrice identité de taille $2\times 2$ qui est bien définie positive.
 
 ### Estimer regression linéaire simple
 
