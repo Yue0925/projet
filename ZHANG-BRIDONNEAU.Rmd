@@ -326,7 +326,7 @@ En effet on a que si $x_1, x_2, \dots \stackrel{i.i.d}\sim \mathcal N(0, 1)$,
 \end{split}
 \end{equation}
 
-On a de plus $\mathbb E[{x_i}^2] = \mathrm{Var}(x_i) - \mathbb E[x_i]^2 = 1$.
+On a de plus $\mathbb E[{x_i}^2] = \mathrm{Var}(x_i) + \mathbb E[x_i]^2 = 1$.
 Ainsi d'après la loi des grands nombres on a $(X'X)/n$ qui converge vers la matrice identité de taille $2\times 2$ qui est bien définie positive.
 
 ### Estimer regression linéaire simple
