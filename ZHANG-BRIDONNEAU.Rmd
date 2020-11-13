@@ -1,5 +1,5 @@
 ---
-title: "project"
+title: "Etude et utilisation de la transformation de Box-Cox appliquée au modèle linéaire"
 author: "Yue Zhang et Gérémi Bridonneau"
 lang: "fr"
 output: 
@@ -351,7 +351,7 @@ X <- as.matrix(cbind(1, X_obs))
 
 ```
 
-En Traçant la profondeur ajustée en fonction de la profondeur observée, on peut observer que le modèle n'est pas bien ajustée, les points s’allongent autour de la première bissectrice, mais les ajustements parfois assez s'éloigent valeurs observées, $Y$ plus grave que $Z$ visuellement, donc ce qui implique aussi ses bruts résidus fortes et potentiellement celle de $Y$ est plus forte que celle de $Z$.
+En Traçant la profondeur ajustée en fonction de la profondeur observée, on peut observer que le modèle n'est pas bien ajustée, les points s’allongent autour de la première bissectrice, mais les ajustements sont parfois assez éloigné des valeurs observées, $Y$ plus grave que $Z$ visuellement, donc ce qui implique aussi ses bruts résidus fortes et potentiellement celle de $Y$ est plus forte que celle de $Z$.
 
 ```{r echo=FALSE, include= TRUE}
 resY <- lm(Y~X)
@@ -363,11 +363,11 @@ abline(0, 1)}
 abline(0, 1)}
 ```
 
-### Etude les résidus
+### Etude des résidus
 
-Par la définition, les résidus $\widehat\varepsilon = Z-X\widehat\theta$. Et les résidus studentisés donc est $t_i = \dfrac{\widehat\varepsilon_i}{\widehat\sigma \sqrt{1-h_{i,i}}}$ où $h_{i,i}$ sont les éléments diagonaux de $H = X(X^{'}X)^{-1}X^{'}$.
+Par la définition, les résidus $\widehat\varepsilon = Z-X\widehat\theta$. Et les résidus studentisés donc $t_i = \dfrac{\widehat\varepsilon_i}{\widehat\sigma \sqrt{1-h_{i,i}}}$ où $h_{i,i}$ sont les éléments diagonaux de $H = X(X^{'}X)^{-1}X^{'}$.
 
-Pour $Z\sim X$, on voit que les résidus bruts sont fortes parce que les valeurs observées sont elles-mêmes assez éloignés de $0$ et estimées avec une faible précision. La plupart d'eux sont raisonnablement compris entre $-2$ et $2$ sauf qu'un seul point, en respectant la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
+Pour $Z\sim X$, on voit que les résidus bruts sont forts parce que les valeurs observées sont elles-mêmes assez éloignés de $0$ et estimées avec une faible précision. La plupart d'entre eux sont raisonnablement compris entre $-2$ et $2$ sauf un seul point, en respectant la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
 
 ```{r echo=FALSE, include=TRUE}
 #Etudier les résidus 
@@ -383,7 +383,7 @@ legend("bottomright",c("resid", "stdres", "studres"),col=1:3, pch=1:3,cex=0.5)
 ```
 
 
-Pour $Y\sim X$, on voit que les résidus bruts sont plus fortes que celles de $Z$, parce que les valeurs observées sont elles-mêmes beaucoup plus éloignés de 0 et estimées avec une très faible précision. La plupart d'eux sont raisonnablement compris entre $-2$ et $2$ mais sauf trois points, en respectant aussi la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
+Pour $Y\sim X$, on voit que les résidus bruts sont plus fortes que celles de $Z$, parce que les valeurs observées sont elles-mêmes beaucoup plus éloignés de 0 et estimées avec une très faible précision. La plupart d'entre eux sont raisonnablement compris entre $-2$ et $2$ sauf trois points, en respectant aussi la règle empirique d'appartenance de $95\%$ des résidus à l'intervalle $-2$ et $2$.
 
 ```{r echo=FALSE, include=TRUE}
 #Y~X
@@ -396,7 +396,7 @@ legend("bottomright",c("resid", "stdres", "studres"),col=1:3, pch=1:3,cex=0.5)
 }
 ```
 
-Pour $Z \sim X$ les points s'alignent, mais pas pour les points qui se trouvent près deux extrémité, donc on s'en doute la gaussiannité des résidus. De même obvervation pour $Y \sim X$.
+Pour $Z \sim X$ les points s'alignent, mais pas pour les points qui se trouvent près des deux extrémité, donc on doute de la gaussiannité des résidus. On même l'observation pour $Y \sim X$.
 
 ```{r echo=FALSE, include=TRUE}
 qqnorm(studres(resZ),main="graphe quantile-quantile Z~X")
@@ -406,7 +406,7 @@ qqnorm(studres(resY),main="graphe quantile-quantile Y~X")
 qqline(stdres(resY)) # passe par le 1er et le 3ème quartile
 ```
 
-Donc on s'intéresse à faire le test Shapiro pour ses normalités. Pour $Z \sim X$, p-valeur égale à $0.6019 > \alpha = 0.05$, donc on garder l'hypothèse de gaussianité avec une risque de seconde espèce inconnue. Pour $Y \sim X$, p-valeur égale à $0.007836 < \alpha = 0.05$, donc on rejette l'hypothèse de gaussianité avec une risque de première espèce $\alpha = 0.05$.
+Donc on s'intéresse à faire le test Shapiro pour la normalité. Pour $Z \sim X$, la p-valeur est égale à $0.6019 > \alpha = 0.05$, donc on garder l'hypothèse de gaussianité avec une risque de seconde espèce inconnue. Pour $Y \sim X$, p-valeur égale à $0.007836 < \alpha = 0.05$, donc on rejette l'hypothèse de gaussianité avec une risque de première espèce $\alpha = 0.05$.
 
 ```{r echo=FALSE, include=TRUE}
 shapiro.test(studres(resZ))
@@ -430,7 +430,7 @@ Lmle = function(Z){
 ```
 
 
-La variable $Q$ est $(I_n-H)$, où $I_n$ est la matrice identidé de taille $50\times 50$, $H = X(X^{'}X)^{-1}X^{'}$. Le variable $sig2$ égale à $\dfrac{h_{\lambda}(Y)^{'}(I_n-H)h_{\lambda}(Y)}{n}$ qui est exactement $\widehat\sigma^2$ où on a démontré dans l'équation (\ref{eq3}). La fonction $Lmle$ retourne le terme $-\dfrac{n}{2}\log(\widehat\sigma^2)$.
+La variable $Q$ est $(I_n-H)$, où $I_n$ est la matrice identité de taille $50\times 50$, $H = X(X^{'}X)^{-1}X^{'}$. Le variable $sig2$ égale à $\dfrac{h_{\lambda}(Y)^{'}(I_n-H)h_{\lambda}(Y)}{n}$ qui est exactement $\widehat\sigma^2$ où on a démontré dans l'équation (\ref{eq3}). La fonction $Lmle$ retourne le terme $-\dfrac{n}{2}\log(\widehat\sigma^2)$.
 
 
 ```{r echo=FALSE, include=TRUE}
@@ -452,7 +452,7 @@ plot(lambdas,Vlmin(lambdas, Y),
 ```
 
 
-On voit bien que la fonction $-L_{max}$ est une fonction quadratique convexe, au près de $\lambda$ à 0.4, $-L_{max}$ atteint au minimum.
+On voit bien que la fonction $-L_{max}$ est une fonction quadratique convexe, à environ $\lambda=0.4$ $-L_{max}$ atteint le minimum.
 
 
 ## 3. Calcul $\widehat\lambda$ et $\widehat{Var(\widehat\lambda)}$
@@ -463,14 +463,14 @@ lambda_est <- resopt$estimate
 var_lambda_est <- 1/resopt$hessian
 ```
 
-Etant donné que $Z=h_{\lambda}(Y)$ est la transformation de $Y$, par la définition donc $\lambda \neq 0$, pour la Méthodes Newton, on commence la itération à partir de $2$.  En utilisant la fonction optimisation $nlm$, on obtient la valeur estimée $\widehat\lambda$ est $resopt\$estimate = 0.3817253$. Comme démontré dans l'équation (\ref{eq15}), la variance de $\widehat\lambda$ est l'inverse de hessian donc est $0.02948455$. (Pour la minimisation $-L_{max}$, la matrice hessian pour $\lambda$ est définie positive $33.91607$)
+Etant donné que $Z=h_{\lambda}(Y)$ est la transformation de $Y$, par la définition donc $\lambda \neq 0$, pour la Méthodes Newton, on commence l'itération à partir de $2$.  En utilisant la fonction optimisation $nlm$, on obtient la valeur estimée $\widehat\lambda$ est $resopt\$estimate = 0.3817253$. Comme démontré dans l'équation (\ref{eq15}), la variance de $\widehat\lambda$ est l'inverse de la hessienne donc est $0.02948455$. (Pour la minimisation $-L_{max}$, la matrice hessienne pour $\lambda$ est définie positive $33.91607$)
 
 
 ## 4. Tests hypothèses
 
 ### Intervale de confiance
 
-Comme on a montré dans le premier section, l'intervalle de confiance pour $\lambda$ est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$ au niveau asymptotiquement $1-\alpha$. Ici on fixe $\alpha$ à $0.05$, donc $q_{1-\alpha/2}$ est $1.959964$ la quantile d'ordre $1-\alpha/2$ sous loi normale, donc on obtien l'IC $[0.04517863, 0.718272]$.
+Comme on a montré dans le premier section, l'intervalle de confiance pour $\lambda$ est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$ au niveau asymptotiquement $1-\alpha$. Ici on fixe $\alpha$ à $0.05$, donc $q_{1-\alpha/2}$ est $1.959964$ la quantile d'ordre $1-\alpha/2$ sous loi normale, donc on obtient l'IC $[0.04517863, 0.718272]$.
 
 ```{r message=FALSE, include=FALSE}
 alpha <- 0.05
@@ -494,15 +494,15 @@ p_value
 p_value-alpha>0 # conserve H_0?
 ```
 
-Das l'équation (\ref{eq17}), on a montré $W = \dfrac{(\widehat\lambda - \lambda_0)^2}{\widehat{Var(\widehat\lambda)}} \rightarrow \chi^2(1)$. Donc on veut tester $H_0 : \lambda = \lambda_0$, contre $H_1: \lambda \neq \lambda_0$ par la statistique de Wald pour les quatres cas ci-dessous:
+Das l'équation (\ref{eq17}), on a montré $W = \dfrac{(\widehat\lambda - \lambda_0)^2}{\widehat{Var(\widehat\lambda)}} \rightarrow \chi^2(1)$. Donc on veut tester $H_0 : \lambda = \lambda_0$, contre $H_1: \lambda \neq \lambda_0$ par la statistique de Wald pour les quatre cas ci-dessous:
 
-1) Par la définition de $h_{\lambda}(Y)$, quand $\lambda = 1$, les données $Y$ ne nécessitent pas de transformation, donc dans le test $\lambda_0=1$. On a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilartère à droite), et p-valeur $0.0003173887 < \alpha$, donc rejette $H_0$ et accèpte $H_1$ avec risque d'erreur première espèce $\alpha$.
+1) Par la définition de $h_{\lambda}(Y)$, quand $\lambda = 1$, les données $Y$ ne nécessitent pas de transformation, donc dans le test $\lambda_0=1$. On a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilatère à droite), et p-valeur $0.0003173887 < \alpha$, donc rejette $H_0$ et accepte $H_1$ avec risque d'erreur de première espèce $\alpha$.
 
-2) De même raison, quand $\lambda = 0.5$, la transformation à appliquer aux observations est en racine carrée. Donc dans le test on veut $\lambda_0 = 0.5$. On a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet (unilartère à droite), et p-valeur $0.4909476657 > \alpha$, donc rejette $H_1$ et accèpte $H_0$ avec risque d'erreur seconde espèce inconnue.
+2) Pour la même raison, quand $\lambda = 0.5$, la transformation à appliquer aux observations est en racine carrée. Donc dans le test on veut $\lambda_0 = 0.5$. On a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet (unilatère à droite), et p-valeur $0.4909476657 > \alpha$, donc on rejette $H_1$ et accepte $H_0$ avec risque d'erreur seconde espèce inconnue.
 
-3) Quand $\lambda_0 = 0.3$, on a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet, et p-valeur $0.6341115306 > \alpha$, donc rejette $H_1$ et accèpte $H_0$ avec risque de seconde espèce inconnue.
+3) Quand $\lambda_0 = 0.3$, on a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet, et p-valeur $0.6341115306 > \alpha$, donc on rejette $H_1$ et accepte $H_0$ avec risque de seconde espèce inconnue.
 
-4) Quand $\lambda_0 = 0$, on a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilartère à droite), et p-valeur $0.0262112618 < \alpha$, donc rejette $H_0$ et accèpte $H_1$ avec risque d'erreur premier espèce $\alpha = 5\%$. (Note que dans $h_{\lambda}(Y)$, $\lambda \neq 0$, donc on test $0.000001$ ici)
+4) Quand $\lambda_0 = 0$, on a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilatère à droite), et p-valeur $0.0262112618 < \alpha$, donc on rejette $H_0$ et accepte $H_1$ avec risque d'erreur premier espèce $\alpha = 5\%$. (Note que dans $h_{\lambda}(Y)$, $\lambda \neq 0$, donc on test $0.000001$ ici)
 
 
 ## 5. Test de rapport de vraisemblance
@@ -520,7 +520,7 @@ for(i in 1:4){
 
 ```
 
-Par l'équation (\ref{eq20}), $TRV$ suit une loi $\chi^2(1)$, donc de même façon, on calcule les $TRV$ observés et les p-valeurs. En comparant p-valeurs et $\alpha$, les conclusions obtenues sont mêmes que ce qui donées par le test Wald dans la question précédente.
+Par l'équation (\ref{eq20}), $TRV$ suit une loi $\chi^2(1)$, donc de même façon, on calcule les $TRV$ observés et les p-valeurs. En comparant les p-valeurs et $\alpha$, les conclusions obtenues sont les mêmes que celles données par le test Wald dans la question précédente.
 
 ## 6. Vérification par fonction "powerTransform"
 
@@ -536,7 +536,7 @@ Etant donné que l'on a toujours des problèmes sur l'installation du package "c
 ```
 
 
-On peut voir que l'estimateur de la puissance transformation appliquée sur $Y$ est le même valeur que l'on a obtenu par maximation le vraisemblance $L_{max}$ calculé par $nlm$ dans la question 3. Puis l'intervalle de confiance $[0.0452, 0.7183]$ est identique que l'on calcule dans question 4 au niveau asymptotique $\alpha =0.05$. Comme on a montré dans question 5, $TRV \sim \chi^2(1)$, pour $\lambda = 1$ et $\lambda = 0$, notre $TRV$ observés et les p-valeurs sont les même que les résultats donnés par fonction $powerTransform$.
+On peut voir que l'estimateur de la puissance transformation appliquée sur $Y$ est la même valeur que l'on a obtenu par maximisation de le vraisemblance $L_{max}$ calculé par $nlm$ dans la question 3. Puis l'intervalle de confiance $[0.0452, 0.7183]$ est identique à celui que l'on calcule dans question 4 au niveau asymptotique $\alpha =0.05$. Comme on a montré dans question 5, $TRV \sim \chi^2(1)$, pour $\lambda = 1$ et $\lambda = 0$, notre $TRV$ observés et les p-valeurs sont les mêmes que les résultats donnés par fonction $powerTransform$.
 
 
 
@@ -573,10 +573,10 @@ res2=lm(df$y~ longueur + amplitude +chargement)
 abline(0, 1)}
 ```
 
-D'abord, on voit que le modèle pour les variables transformées $M1 : y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$ n'est pas bien ajusté, comme le montre visuellement la figure ci-dessus: certains les points s’allongent prêsquement autour de la première bissectrice, mais les premiers données et les derniers données s'éloignent assez loin que la droite $y=x$, pour la plupart donées, les ajustements un peu plus proches des valeurs observées mais avec certain des bruits assez évidents.
+D'abord, on voit que le modèle pour les variables transformées $M1 : y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$ n'est pas bien ajusté, comme le montre visuellement la figure ci-dessus: certains des points s’alignent prêsque autour de la première bissectrice, mais les premieres données et les dernieres données s'éloignent assez loin que la droite $y=x$, pour la plupart des données, les ajustements sont un peu plus proches des valeurs observées mais avec certain des bruits assez évidents.
 
 
-Et puis par la définition dans l'énoncé, on obtient les valeurs pour les variables non transformées (longueur, amplitude et chargement). De même façon, on applique aussi modèle linéaire multiple, mais les deux ajustemnts sont identiques. Bien sûre que les estimateurs de coéfficient ($\widehat \theta$) changent, parce que les variables explicatives (i.e. la nouvelle matrice expériance $X=[1,$ longueur, amplitude , chargement$]$) changent. Mais les valeurs ajustées ne changent pas, donc la performance de modèle ne change pas non plus. Comme on peut vérifier par les données ci-dessous, les estimateurs changent mais le $R^2$ et F statistique ne changent pas.
+Et puis par la définition dans l'énoncé, on obtient les valeurs pour les variables non transformées (longueur, amplitude et chargement). De même façon, on applique aussi modèle linéaire multiple, mais les deux ajustements sont identiques. Bien sûre que les estimateurs de coefficient ($\widehat \theta$) changent, parce que les variables explicatives (i.e. la nouvelle matrice expérience $X=[1,$ longueur, amplitude , chargement$]$) changent. Mais les valeurs ajustées ne changent pas, donc la performance de modèle ne change pas non plus. Comme on peut vérifier par les données ci-dessous, les estimateurs changent mais le $R^2$ et la F statistique ne changent pas.
 
 
 ```{r echo=FALSE, include= TRUE}
@@ -584,38 +584,38 @@ summary(res1)
 summary(res2)
 ```
 
-A partir ici, on n'analyse que les valeurs pour $y\sim x_1+x_2+x_3$. Parce que pour $y\sim longueur+amplitude+chargement$ c'est la même façon et les conclusions sont les mêmes que pour $y\sim x_1+x_2+x_3$.
+A partir d'ici, on analyse que les valeurs pour $y\sim x_1+x_2+x_3$. Parce que pour $y\sim longueur+amplitude+chargement$ c'est la même méthode et les conclusions sont les mêmes que pour $y\sim x_1+x_2+x_3$.
 
 ### Analyse la significativité des variables
 
 Ici on veut tester chaque composante $\theta_i$ dans $\theta$. $H_0: \theta_i = 0$ contre $H_1: \theta_i \neq 0$, on suppose que $\alpha = 0.05$.
 
-1) $\mu$: p-valeur $3.83e-09 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\mu$ est non nul avec risque de première espèce $\alpha = 0.05$, et l'intercept est utile dans $M1$ donc elle est sifnificative.
+1) $\mu$: p-valeur $3.83e-09 < \alpha$, donc on rejette $H_0$ et accepte $H_1$, c'est-à-dire on décide que le coefficient $\mu$ est non nul avec risque de première espèce $\alpha = 0.05$, et l'intercepte est utile dans $M1$ donc elle est significative.
 
-2) $\beta_1$: p-valeur $7.66e-06 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_1$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_1$ est utile dans $M1$ donc elle est sifnificative.
+2) $\beta_1$: p-valeur $7.66e-06 < \alpha$, donc on rejette $H_0$ et accepte $H_1$, c'est-à-dire on décide que le coefficient $\beta_1$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_1$ est utile dans $M1$ donc elle est significative.
 
-3) $\beta_2$: p-valeur $0.000109 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_2$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_2$ est utile dans $M1$ donc elle est sifnificative.
+3) $\beta_2$: p-valeur $0.000109 < \alpha$, donc on rejette $H_0$ et accepte $H_1$, c'est-à-dire on décide que le coefficient $\beta_2$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_2$ est utile dans $M1$ donc elle est significative.
 
-4) $\beta_3$: p-valeur $0.012734 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_3$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_3$ est utile dans $M1$ donc elle est sifnificative.
+4) $\beta_3$: p-valeur $0.012734 < \alpha$, donc on rejette $H_0$ et accepte $H_1$, c'est-à-dire on décide que le coefficient $\beta_3$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_3$ est utile dans $M1$ donc elle est significative.
 
-En conclusion, on considère de garder tous les composantes variables dans $M1$.
+En conclusion, on considère de garder toutes les composantes variables dans $M1$.
 
 ### Analyse la significativité globale de la regression
 
 Il s'agit de test Fisher sur un sous modèle linéaire du $M1$. On veut tester $H_0: \mu = \beta_1 = \beta_2 = \beta_3 = 0$, contre $H_1:$ l'un des paramètres n'est pas nul.
 
-On observe que le F-statistique observé est $20.63$, et son p-valeur est $1.028e-06 < \alpha = 0.05$, donc on rejette $H_0$ et accèpte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut concluire que au moins l'un des quatres coéfficient (composante paramètre) n'est pas nul, au moins l'un des quatres variables (intercept et $x_1, x_2, x_3$) est signifigative.
+On observe que le F-statistique observé est $20.63$, et sa p-valeur est $1.028e-06 < \alpha = 0.05$, donc on rejette $H_0$ et accepte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut conclure qu'au moins l'un des quatre coefficient (composante paramètre) n'est pas nul, au moins l'un des quatre variables (intercepte et $x_1, x_2, x_3$) est significative.
 
 ### Analyse R squared
 
-$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.7291$ signifie que la population de $72.91\%$ de données peuvent être epliquées par notre modèle $M1$, la mauvaise qualité de l'ajustement et aussi énormément des brutes. En conclusion, $M1$ le LM multiple n'est pas un modèle idéel.
+$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.7291$ signifie que la population de $72.91\%$ de données peuvent être expliquées par notre modèle $M1$, la mauvaise qualité de l'ajustement et aussi énormément des brutes. En conclusion, $M1$ le LM multiple n'est pas un modèle idéal.
 
 
 ## 2. Modèle regression linéair d'ordre 2
 
 ### Etude redression LM d'ordre 2
 
-Maintenant, on voudrais modéliser un modèle regression linéair d'ordre 2 $M2: y = \mu + \sum_i \beta_i x_i + \sum_{i} \beta_{ii} x_i^2 + \sum_{i<j} \beta_{i,j} x_i x_j + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d. Voici dessous le graphe de l'ajustement:
+Maintenant, on voudrais modéliser un modèle régression linéaire d'ordre 2 $M2: y = \mu + \sum_i \beta_i x_i + \sum_{i} \beta_{ii} x_i^2 + \sum_{i<j} \beta_{i,j} x_i x_j + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d. Voici dessous le graphe de l'ajustement:
 
 ```{r echo=FALSE, include=TRUE}
 #M2
@@ -624,10 +624,10 @@ res3 <- lm(y~ df$x1 + df$x2 + df$x3 + I(df$x1^2) + I(df$x2^2) + I(df$x3^2) + I(d
 abline(0, 1)}
 ```
 
-On voit bien visuellement que l'ajustement du modèle $M2$ est beaucoup plus amélioré que $M1$! Les points
-s’allongent autour de la première bissectrice, les ajustements beaucoup proches des valeurs observées. En plus, il n'existe plus les valeurs négatives.
+On voit bien visuellement que l'ajustement du modèle $M2$ est largement mieux que $M1$! Les points
+s’allongent autour de la première bissectrice, les ajustements sont beaucoup plus proches des valeurs observées. En plus, il n'existe plus les valeurs négatives.
 
-Maintenant, on analyse rapidement les valeurs donées par R de même façon que l'on a fait dans la question précédente.
+Maintenant, on analyse rapidement les valeurs données par R de même façon que l'on a fait dans la question précédente.
 
 ```{r echo=FALSE, include=TRUE}
 summary(res3)
@@ -635,23 +635,23 @@ summary(res3)
 
 ### Analyse la significativité des variables
 
-Ici on veut tester chaque composante $\theta_i$ dans $\theta$. $H_0: \theta_i = 0$ contre $H_1: \theta_i \neq 0$, on suppose que $\alpha = 0.05$. Etant donné que y'a dix composantes paramètres dans l'estimateur $\theta$, on n'analyse pas un par un variables ici.
+Ici on veut tester chaque composante $\theta_i$ dans $\theta$. $H_0: \theta_i = 0$ contre $H_1: \theta_i \neq 0$, on suppose que $\alpha = 0.05$. Etant donné qu'il y a dix composantes paramètres dans l'estimateur $\theta$, on n'analyse pas un par un les variables ici.
 
-En vérifiant chaque p-valeur correspondantes les variables, on peut concluire que seulement la variable $x_3^2$ et la variable $x_2x_3$ ne sont pas signifigatives. Parce que ses p-valeurs sont supérieures à $\alpha$ donc on regarde $H_0$ (avec risque de seconde espèce inconnue) et décide que ses coéfficients sont nuls, donc les deux variables ne sont pas utiles dans $M2$ (i.e. ne sont pas significatives). Pour la reste, ils sont tous signifigatives. En conclusion, on considère de ne pas garder $x_3^2$ et $x_2x_3$ dans $M2$.
+En vérifiant chaque p-valeur correspondantes les variables, on peut conclure que seulement la variable $x_3^2$ et la variable $x_2x_3$ ne sont pas significatives. Parce que ses p-valeurs sont supérieures à $\alpha$ donc on regarde $H_0$ (avec risque de seconde espèce inconnue) et décide que ses coefficients sont nuls, donc les deux variables ne sont pas utiles dans $M2$ (i.e. ne sont pas significatives). Pour la reste, elles sont toutes significatives. En conclusion, on considère de ne pas garder $x_3^2$ et $x_2x_3$ dans $M2$.
 
 ### Analyse la significativité globale de la regression
 
-On veut tester $H_0:$ tous les composantes de l'estimateur sont équalent à $0$, contre $H_1:$ l'un des paramètres n'est pas nul.
+On veut tester $H_0:$ tous les composantes de l'estimateur sont égalent à $0$, contre $H_1:$ l'un des paramètres n'est pas nul.
 
-On observe que le F-statistique observé est $28.51$, et son p-valeur est $1.564e-08 < \alpha = 0.05$, donc on rejette $H_0$ et accèpte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut concluire que au moins l'un des dix coéfficients (composantes paramètre) n'est pas nul, au moins l'un des dix variables est signifigative.
+On observe que le F-statistique observé est $28.51$, et son p-valeur est $1.564e-08 < \alpha = 0.05$, donc on rejette $H_0$ et accepte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut conclure qu'au moins l'un des dix coefficients (composantes paramètre) n'est pas nul, au moins l'une des dix variables est significative.
 
 ### Analyse R squared
 
-$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.9379$ signifie que la population de $93.79\%$ de données sont epliquées par notre modèle $M2$, ce qui implique un très bonne qualité de l'ajustement. En conclusion, $M2$ le LM multiple d'ordre 2 est un modèle assez performante.
+$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.9379$ signifie que la population de $93.79\%$ de données sont expliquées par notre modèle $M2$, ce qui implique un très bonne qualité de l'ajustement. En conclusion, $M2$ le LM multiple d'ordre 2 est un modèle assez performant.
 
 ### Test modèle
 
-On veut consrtuire un test $M1$ contre $M2$ en utilisant "anova" fonction. En théorie, le F statistique est le même que le test de signifigativité globale de la regression. On voit bien le $F_{obs} = 9.5227$, p-valeur égale à $0.000115 < \alpha=0.05$, donc on conclut que les variables d'interaction ajoutées sont significatives.
+On veut construire un test $M1$ contre $M2$ en utilisant "anova" fonction. En théorie, le F statistique est le même que le test de signifigativité globale de la regression. On voit bien le $F_{obs} = 9.5227$, p-valeur égale à $0.000115 < \alpha=0.05$, donc on conclut que les variables d'interaction ajoutées sont significatives.
 
 ```{r echo=FALSE, include=FALSE}
 anova(res1, res3)
@@ -661,6 +661,8 @@ anova(res1, res3)
 
 
 # Conclusion
+
+En conclusion on peut dire que l'on a ici étudié théoriquement la transformation Box-Cox puis l'on a utilisé différents outils pour l'utiliser concrètement sur un étude de cas. On a aussi pu se rendre compte de l'utilité et des limites de cette méthode.
 
 
 ```{r}
