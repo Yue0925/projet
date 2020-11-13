@@ -134,7 +134,7 @@ Et
 \end{split}
 \end{equation}
 
-On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont équaux par calculation l'équation maximum vraisemblance. Par l'équation (\ref{eq3}), on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n} = \dfrac{SCR(\lambda)}{n}$ avec $H = X(X^{'}X)^{-1}X^{'}$, est la somme de carrés résiduels de variance $h_{\lambda}(Y^)$ divisée par $n$. Depuis l'équation (\ref{eq7}), on peut continuer cette calculation en remplaçant $\widehat{\sigma}^2$, et pour rappel $h_{\lambda}(Y) = \dfrac{Y^{\lambda}-1}{\lambda}$:
+On peut bien vérifier que $\frac{\partial \ell}{\partial \lambda}$ et $\frac{\partial L_{max}}{\partial \lambda}$ sont égaux par calcule de l'équation du maximum de vraisemblance. Par l'équation (\ref{eq3}), on sait que $\widehat{\sigma}^2(\lambda) = \dfrac{h_{\lambda}(Y)^{'} (I_n-H) h_{\lambda}(Y)}{n} = \dfrac{SCR(\lambda)}{n}$ avec $H = X(X^{'}X)^{-1}X^{'}$, est la somme de carrés résiduels de variance $h_{\lambda}(Y^)$ divisée par $n$. Depuis l'équation (\ref{eq7}), on peut continuer ce calcul en remplaçant $\widehat{\sigma}^2$ avec pour rappel $h_{\lambda}(Y) = \dfrac{Y^{\lambda}-1}{\lambda}$:
 
 \begin{equation} \label{eq8}
 \begin{split}
@@ -164,7 +164,7 @@ Donc $\widehat{\sigma}^2$ devient $\widehat{\sigma}^2(\lambda;z) = \dfrac{z_{\la
 \end{equation}
 
 
-Par le théorème du cours, l'emv est asymptotiquement normale, donc la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
+Par le théorème du cours, l'emv est asymptotiquement normal, donc la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
 
 
 \begin{equation} \label{eq11}
@@ -174,14 +174,14 @@ Par le théorème du cours, l'emv est asymptotiquement normale, donc la distribu
 \end{equation}
 
 
-$I_1(\beta)^{-1}$ est la matrice de l'information de Fisher, noté que $\widehat V = I_1(\beta)^{-1}$ et $I_{dp}$ est la matrice identité de la taille $p$. Quand $n \geq 30$, par le théorème $TCL$, $\widehat\beta$ tends à gaussien, donc à distance finie la distribution de $\widehat\beta$ approche à loi gaussienne.
+$I_1(\beta)^{-1}$ est la matrice de l'information de Fisher, noté que $\widehat V = I_1(\beta)^{-1}$ et $I_{dp}$ est la matrice identité de taille $p$. Quand $n \geq 30$, par le théorème $TCL$, $\widehat\beta$ tends vers un vecteur gaussien, donc à distance finie la distribution de $\widehat\beta$ approche la loi gaussienne.
 
 
 ## 4. Distribution asymptotique de l'emv
 
 ### Estimer la variance de $\widehat{\lambda}$
 
-Par la propriéte de l'emv, quand $\widehat \beta$ tend à devenir gaussien et on peut prendre pour loi approchée à distance finie la loi asymptotique
+Par la propriété de l'emv, quand $\widehat \beta$ tend à devenir gaussien, on peut prendre pour loi approchée à distance finie la loi asymptotique
 
 \begin{equation} \label{eq12}
 \begin{split}
@@ -199,7 +199,7 @@ I_1(\beta) & =\EX_{\beta}[\dot{\ell} \dot{\ell^{'}}] \\
 \end{split}
 \end{equation}
 
-où $\ddot{\ell}$ est la matrice Hessien $\ddot{\ell} = \dfrac{\partial^2 \ell}{\partial \beta \partial \beta^{'}}$ (pour rappelle que on a définit $\beta = (\theta, \lambda,  \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres). En particulier, on n'a pas forcément besoin d'estimer $\sigma^2$ simultanément avec $\theta$ et $\lambda$, donc pour simplifier les calculs, on décide de calculer la matrice Hessien de $L_{max}(\lambda)$. Dans l'équation (\ref{eq7}), on a calculé $\dfrac{\partial L_{max}}{\partial \lambda} = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\dfrac{\partial h_{\lambda}(Y)}{\partial\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right|$, et on obtient sans souci $\dfrac{\partial L_{max}}{\partial \theta} = \dfrac{X^{'}(h_{\lambda}(Y)- X\theta)}{\widehat{\sigma}^2}$.
+où $\ddot{\ell}$ est la matrice Hessienne $\ddot{\ell} = \dfrac{\partial^2 \ell}{\partial \beta \partial \beta^{'}}$ (pour rappelle on a définit $\beta = (\theta, \lambda,  \sigma^2)^{'}$ a $p \times 1$ vecteur de paramètres). En particulier, on n'a pas forcément besoin d'estimer $\sigma^2$ simultanément avec $\theta$ et $\lambda$, donc pour simplifier les calculs, on décide de calculer la matrice Hessienne de $L_{max}(\lambda)$. Dans l'équation (\ref{eq7}), on a calculé $\dfrac{\partial L_{max}}{\partial \lambda} = -\dfrac{(h_{\lambda}(Y)-X\theta)\left|\dfrac{\partial h_{\lambda}(Y)}{\partial\lambda} \right|}{\widehat{\sigma}^2}+ \sum_{i=1}^n \log\left|Y_i \right|$, et on obtient sans souci $\dfrac{\partial L_{max}}{\partial \theta} = \dfrac{X^{'}(h_{\lambda}(Y)- X\theta)}{\widehat{\sigma}^2}$.
 
 \begin{equation} \label{eq14}
 \begin{split}
@@ -212,7 +212,7 @@ X^{'}X & -X^{'} \left|\dfrac{\partial h_{\lambda}(Y)}{\partial \lambda} \right| 
 \end{split}
 \end{equation}
 
-$H(\beta)$ est bien une matrice définie négative. Etant donnée la distribution asymptotique normale de l'emv, on peut concluire que $\widehat{Var(\widehat\beta)} = - [H(\widehat{\beta})]^{-1}$, maintenant on calcul $\widehat{Var(\widehat \lambda)}$:
+$H(\beta)$ est bien une matrice définie négative. Etant donnée la distribution asymptotique normale de l'emv, on peut conclure que $\widehat{Var(\widehat\beta)} = - [H(\widehat{\beta})]^{-1}$, maintenant on calcul $\widehat{Var(\widehat \lambda)}$:
 
 \begin{equation} \label{eq15}
 \begin{split}
@@ -225,9 +225,9 @@ où $H(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \dfrac{\left|
 
 ### Intervalle de confiance
 
-Soit l'emv est asymptotiquement normalement distribué, par la propriéte dans l'équation (\ref{eq12}), donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} \sim \mathcal{N}(0, I_{dp})$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale $\mathcal{N}(0,1)$. La distribution est symétrique par rapport à 0, donc l'IC estimateur $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$.
+L'emv est asymptotiquement normalement distribué, par la propriété dans l'équation (\ref{eq12}), on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} \sim \mathcal{N}(0, I_{dp})$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale $\mathcal{N}(0,1)$. La distribution est symétrique par rapport à $0$, donc l'IC estimateur de $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$.
 
-L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation (\ref{eq15}).
+L'intervalle de confiance de $\lambda$ est donc $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation (\ref{eq15}).
 
 
 ### Test de Wald
@@ -334,7 +334,7 @@ En effet on a que si $x_1, x_2, \dots \stackrel{i.i.d}\sim \mathcal N(0, 1)$,
 On a de plus $\mathbb E[{x_i}^2] = \mathrm{Var}(x_i) + \mathbb E[x_i]^2 = 1$.
 Ainsi d'après la loi des grands nombres on a $(X'X)/n$ qui converge vers la matrice identité de taille $2\times 2$ qui est bien définie positive.
 
-### Estimer regression linéaire simple
+### Estimation de la regression linéaire simple
 
 Le modèle linéaire simple donc est $z_i = \mu + \theta x_i + \sigma\varepsilon_i$, $\varepsilon_i \sim \mathcal{N}(0, 1)$ i.i.d. Le plan d'expérience $X$ est en taille $[n,p]$ i.e. $[50 \times 2]$, et $\widehat\theta = (X^{'}X)^{-1}X^{'}Z$, $\widehat\sigma^2 = \dfrac{1}{n-p} ||Z-X\widehat\theta ||^2$.
 
