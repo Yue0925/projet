@@ -25,11 +25,13 @@ On va étudier une transformations non linéaires et en particulier la transform
 
 On s'intéresse au modèle d'observation $(x_i,Y_i)$:
 
-  \begin{equation}\label{mod} h_\lambda(Y_i)=Z_i=x_i\theta+\varepsilon_i,\;\varepsilon_i\stackrel{iid}\sim\mathcal N(0,\sigma^2)\end{equation}
+\begin{equation}\label{mod} 
+h_\lambda(Y_i)=Z_i=x_i\theta+\varepsilon_i,\;\varepsilon_i\stackrel{iid}\sim\mathcal N(0,\sigma^2)
+\end{equation}
 
 où $(h_\lambda)$ est une famille de transformations paramétrées par $\lambda$.
 
-## 1. Etude de la tranformation de Box-Cox.
+## Etude de la tranformation de Box-Cox.
 
 Ici on s'intéresse à la transformation de Box-Cox définie par 
 
@@ -43,7 +45,7 @@ On remarque que théoriquement cette transformation est incompatible avec le mod
 
 Si toute les observations sont positives on peut quand même utiliser cette transformation car on perdra qu'une faible partie des données normalement dans la queue à gauche de la répartition. Par exemple si les données ne suivent pas une loi normale mais une loi beta de paramètre $\alpha=2,\beta=2.2$ et qu'on utilise la transformation de Box et Cox avec $\lambda=2$ on obtient:
 
-```{r, echo=FALSE, include=TRUE}
+```{r echo=FALSE, include= TRUE}
 lambda <- 2
 a <- 2
 b <- 2.2
@@ -379,10 +381,6 @@ abline(0,0)
 abline(2,0, col="red")
 abline(-2,0, col="red")
 }
-#residus_stud <- residus/(sigma_est * sqrt(1-H_x))
-#points(X%*%theta_est,residus,main="différents résidus")
-#abline(h=2,lty=2)
-#abline(h=-2,lty=2)
 ```
 
 
@@ -506,6 +504,13 @@ Etant donné que l'on a toujours des problèmes sur l'installation du package "c
 
 ![powerTransform](powerTransform_online.jpg)
 
+```{r include=FALSE}
+################################# Merci de décommenter ci vous souhaitez l'exécuter ########################
+#library('car')
+#res <- powerTransform(Y~X, family="bcPower")
+#summary(res)
+```
+
 
 On peut voir que l'estimateur de la puissance transformation appliquée sur $Y$ est le même valeur que l'on a obtenu par maximation le vraisemblance $L_{max}$ calculé par $nlm$ dans la question 3. Puis l'intervalle de confiance $[0.0452, 0.7183]$ est identique que l'on calcule dans question 4 au niveau asymptotique $\alpha =0.05$. Comme on a montré dans question 5, $TRV \sim \chi^2(1)$, pour $\lambda = 1$ et $\lambda = 0$, notre $TRV$ observés et les p-valeurs sont les même que les résultats donnés par fonction $powerTransform$.
 
@@ -526,49 +531,110 @@ str(df) #structure de data frame
 
 ## 1. Modèle regression linéaire multiple 
 
-On définit le modèle linéaire multiple ($M1$) $y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d.
+### Analyse regression LM multiple
 
-```{r echo=FALSE}
-res1 <- lm(y~.,data=df) #M1
-summary(res1)
+On définit le modèle linéaire multiple ($M1$) $y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d, on note que $\theta = [\mu, \beta_1, \beta_2, \beta_3]$.
 
-{plot(df$y, res1$fitted,main="ajustés/observés")
+```{r echo=FALSE, include= TRUE}
+#M1
+res1 <- lm(y~.,data=df) 
+{plot(res1$fitted, df$y, xlab = "vars ajustées", ylab = "vars observées",main="M1:y~x1+x2+x3")
 abline(0, 1)}
 
-########################################
 longueur <- 50*df$x1+300
 amplitude <- df$x2+9
 chargement <- df$x3*5 + 45
-
-res2=lm(y~ longueur + amplitude +chargement,data=df) #M1
-summary(res2)
-
-
-{plot(df$y, res2$fitted,main="ajustés/observés")
+res2=lm(df$y~ longueur + amplitude +chargement)
+{plot(res2$fitted, df$y, xlab = "vars ajustées", ylab = "vars observées",main="y~longueur+amplitude+chargement")
 abline(0, 1)}
-
 ```
 
+D'abord, on voit que le modèle pour les variables transformées $M1 : y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$ n'est pas bien ajusté, comme le montre visuellement la figure ci-dessus: certains les points s’allongent prêsquement autour de la première bissectrice, mais les premiers données et les derniers données s'éloignent assez loin que la droite $y=x$, pour la plupart donées, les ajustements un peu plus proches des valeurs observées mais avec certain des bruits assez évidents.
 
-## 2.
+
+Et puis par la définition dans l'énoncé, on obtient les valeurs pour les variables non transformées (longueur, amplitude et chargement). De même façon, on applique aussi modèle linéaire multiple, mais les deux ajustemnts sont identiques. Bien sûre que les estimateurs de coéfficient ($\widehat \theta$) changent, parce que les variables explicatives (i.e. la nouvelle matrice expériance $X=[1,$ longueur, amplitude , chargement$]$) changent. Mais les valeurs ajustées ne changent pas, donc la performance de modèle ne change pas non plus. Comme on peut vérifier par les données ci-dessous, les estimateurs changent mais le $R^2$ ne change pas.
 
 
-```{r echo=FALSE}
-res3 <- lm(y~ df$x1 + df$x2 + df$x3 + I(df$x1^2) + I(df$x2^2) + I(df$x3^2) + I(df$x1*df$x2) + I(df$x1*df$x3) + I(df$x2*df$x3), data=df) #M2
+```{r echo=FALSE, include= TRUE}
+summary(res1)
+summary(res2)
+```
 
+Donc ici on n'analyse que les valeurs pour $y\sim x_1+x_2+x_3$, pour $y\sim longueur+amplitude+chargement$ c'est la même façon et les conclusions sont les mêmes que pour $y\sim x_1+x_2+x_3$.
+
+### Analyse la significativité des variables
+
+Ici on veut tester chaque composante $\theta_i$ dans $\theta$. $H_0: \theta_i = 0$ contre $H_1: \theta_i \neq 0$, on suppose que $\alpha = 0.05$.
+
+1) $\mu$: p-valeur $3.83e-09 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\mu$ est non nul avec risque de première espèce $\alpha = 0.05$, et l'intercept est utile dans $M1$ donc elle est sifnificative.
+
+2) $\beta_1$: p-valeur $7.66e-06 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_1$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_1$ est utile dans $M1$ donc elle est sifnificative.
+
+3) $\beta_2$: p-valeur $0.000109 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_2$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_2$ est utile dans $M1$ donc elle est sifnificative.
+
+4) $\beta_3$: p-valeur $0.012734 < \alpha$, donc on rejette $H_0$ et accèpte $H_1$, c'est-à-dire on décide que le coéfficient $\beta_3$ est non nul avec risque de première espèce $\alpha = 0.05$, et $x_3$ est utile dans $M1$ donc elle est sifnificative.
+
+En conclusion, on considère de garder tous les composantes variables dans $M1$.
+
+### Analyse la significativité globale de la regression
+
+Il s'agit de test Fisher sur un sous modèle linéaire du $M1$. On veut tester $H_0: \mu = \beta_1 = \beta_2 = \beta_3 = 0$, contre $H_1:$ l'un des paramètres n'est pas nul.
+
+On observe que le F-statistique observé est $20.63$, et son p-valeur est $1.028e-06 < \alpha = 0.05$, donc on rejette $H_0$ et accèpte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut concluire que au moins un des quatres coéfficient (composante paramètre) n'est pas nul, au moins un des quatres variables (intercept et $x_1, x_2, x_3$) est signifigative.
+
+### Analyse R squared
+
+$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.7291$ signifie que la population de $72.91\%$ de données peuvent être epliquées par notre modèle $M1$, la mauvaise qualité de l'ajustement et aussi énormément des brutes. En conclusion, $M1$ le LM multiple n'est pas un modèle idéel.
+
+
+## 2. Modèle regression linéair d'ordre 2
+
+### Etude redression LM d'ordre 2
+
+Maintenant, on voudrais modéliser un modèle regression linéair d'ordre 2 $M2: y = \mu + \sum_i \beta_i x_i + \sum_{i} \beta_{ii} x_i^2 + \sum_{i<j} \beta_{i,j} x_i x_j + \varepsilon$. Voici dessous le graphe de l'ajustement:
+
+```{r echo=FALSE, include=TRUE}
+#M2
+res3 <- lm(y~ df$x1 + df$x2 + df$x3 + I(df$x1^2) + I(df$x2^2) + I(df$x3^2) + I(df$x1*df$x2) + I(df$x1*df$x3) + I(df$x2*df$x3), data=df) 
+{plot(res3$fitted, df$y, xlab = "vars ajustées", ylab = "vars observées",main="M2")
+abline(0, 1)}
+```
+
+On voit bien visuellement que l'ajustement du modèle $M2$ est beaucoup plus amélioré que $M1$! Les points
+s’allongent autour de la première bissectrice, les ajustements beaucoup proches des valeurs observées. En plus, il n'existe plus les valeurs négatives.
+
+Maintenant, on analyse rapidement les valeurs donées par R de même façon que l'on a fait dans la question précédente.
+
+```{r echo=FALSE, include=TRUE}
 summary(res3)
-
-{plot(res3$fitted,df$y,main="ajustés/observés")
-abline(0,1)}
 ```
 
+### Analyse la significativité des variables
+
+Ici on veut tester chaque composante $\theta_i$ dans $\theta$. $H_0: \theta_i = 0$ contre $H_1: \theta_i \neq 0$, on suppose que $\alpha = 0.05$. Etant donné que y'a dix composantes paramètres dans l'estimateur $\theta$, on n'analyse pas un par un variables ici.
+
+En vérifiant chaque p-valeur correspondantes les variables, on peut concluire que seulement la variable $x_3^2$ et la variable $x_2x_3$ ne sont pas signifigatives. Parce que ses p-valeur sont supérieure à $\alpha$ donc on regarde $H_0$ (avec risque de seconde espèce inconnue) et décide que ses coéfficients sont nuls, donc les deux variables ne sont pas utiles dans $M2$. Pour la reste, ils sont tous signifigatives. En conclusion, on considère de ne pas garder $x_3^2$ et $x_2x_3$ dans $M2$.
+
+### Analyse la significativité globale de la regression
+
+On veut tester $H_0:$ tous les composantes de l'estimateur sont équalent à 0, contre $H_1:$ l'un des paramètres n'est pas nul.
+
+On observe que le F-statistique observé est $28.51$, et son p-valeur est $1.564e-08 < \alpha = 0.05$, donc on rejette $H_0$ et accèpte $H_1$, avec risque d'erreur de première espèce $\alpha$. On peut concluire que au moins un des dix coéfficients (composantes paramètre) n'est pas nul, au moins un des dix variables est signifigative.
+
+### Analyse R squared
+
+$R^2$ s'interprète comme la part de variance expliquée par les régresseurs supplémentaires. Donc $0.9379$ signifie que la population de $93.79\%$ de données sont epliquées par notre modèle $M2$, ce qui implique un très bonne qualité de l'ajustement. En conclusion, $M2$ le LM multiple d'ordre 2 est un modèle assez performante.
+
+### Test modèle
+
+On veut consrtuire un test $M1$ contre $M2$ en utilisant "anova" fonction. En théorie, le F statistique est le même que le test de signifigativité globale de la regression. On voit bien le $F_{obs} = 9.5227$, p-valeur égale à $0.000115 < \alpha=0.05$, donc on conclut que les variables d'interaction ajoutées sont significatives.
 
 
-## 3.
-
-```{r}
+```{r echo=FALSE, include=TRUE}
 anova(res1, res3)
 ```
+
+## 3. Test de variance
 
 
 # Conclusion
