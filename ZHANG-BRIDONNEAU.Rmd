@@ -11,7 +11,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(include = FALSE)
 ```
 
 # Introduction
@@ -152,29 +152,29 @@ Donc $\widehat{\sigma}^2$ devient $\widehat{\sigma}^2(\lambda;z) = \dfrac{z_{\la
 \end{equation}
 
 
-Pour répondre que l'emv est-il gaussien à distance finie? Je sais pas comment expliquer mais par le théorème du cours, l'emv est asymptotiquement normale non? emmm je vais réfléchir. genre la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
+Par le théorème du cours, l'emv est asymptotiquement normale, donc la distribution de $\sqrt{n}(\widehat{\beta} - \beta)$, quand $n \rightarrow  \infty$, elle converge en une loi normale.
 
 
 \begin{equation} \label{eq11}
 \begin{split}
-\left[I_1(\beta)^{-1} \right]^{1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_{dp})
+\widehat V ^{-1/2} \sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_{dp})
 \end{split}
 \end{equation}
 
 
-$I_1(\beta)^{-1}$ est la matrice de l'information de Fisher, noté que $\widehat V = I_1(\beta)^{-1}$ et $I_{dp}$ est la matrice identité de la taille $p$.
+$I_1(\beta)^{-1}$ est la matrice de l'information de Fisher, noté que $\widehat V = I_1(\beta)^{-1}$ et $I_{dp}$ est la matrice identité de la taille $p$. Quand $n \geq 30$, par le théorème $TCL$, $\widehat\beta$ tends à gaussien, donc à distance finie la distribution de $\widehat\beta$ approche à loi gaussienne.
 
 
 ## 4. Distribution asymptotique de l'emv
 
 ### Estimer la variance de $\widehat{\lambda}$
 
-Soit $\widehat{\beta}$ l'emv asymptotiquement normal, 
+Par la propriéte de l'emv, quand $\widehat \beta$ tend à devenir gaussien et on peut prendre pour loi approchée à distance finie la loi asymptotique
 
 \begin{equation} \label{eq12}
 \begin{split}
-\sqrt{n}(\widehat{\beta} - \beta) \rightarrow \mathcal{N}(0, I_1(\beta)^{-1}) \\
-\widehat{\beta} \sim \mathcal{N}(\beta, I_1(\beta)^{-1})
+\widehat V^{-1/2} (\widehat{\beta} - \beta) \stackrel{appr}\sim \mathcal{N}(0, I_{dp}) \\
+\widehat{\beta} \stackrel{appr}\sim \mathcal{N}(\beta, I_1(\beta)^{-1})
 \end{split}
 \end{equation}
 
@@ -213,9 +213,9 @@ où $H(\lambda) = \dfrac{\partial^2 L_{max}}{\partial^2 \lambda} = \dfrac{\left|
 
 ### Intervalle de confiance
 
-Etant donné que l'emv est asymptotiquement normalement distribué, donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} \sim \mathcal{N}(0, I_{dp})$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale. La distribution est symétrique par rapport à 0, donc l'IC estimateur $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\beta})}}{n}}]$.
+Soit l'emv est asymptotiquement normalement distribué, par la propriéte dans l'équation (\ref{eq12}), donc on peut construire le test $T = \dfrac{\widehat{\beta} - \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} \sim \mathcal{N}(0, I_{dp})$. Par définition, $P(q_{\alpha/2} < \dfrac{\widehat{\beta}- \beta}{\sqrt{\widehat{Var(\widehat{\beta})}}} < q_{1-\alpha/2}) = 1-\alpha$, donc on peut obtenir l'intervalle de confiance $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} - q_{\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$, où $q_{\alpha/2}$ et $q_{1-\alpha/2}$ sont quantiles d'ordre $\alpha/2$ et $1-\alpha/2$ sous la loi normale $\mathcal{N}(0,1)$. La distribution est symétrique par rapport à 0, donc l'IC estimateur $\beta$ est également $[\widehat{\beta} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}, \widehat{\beta} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\beta})}}]$.
 
-L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation (\ref{eq15}).
+L'intervalle de confiance de $\lambda$ donc est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$, où $\widehat{Var(\widehat{\lambda})}$ est calculé dans l'équation (\ref{eq15}).
 
 
 ### Test de Wald
@@ -225,12 +225,6 @@ On définit $A = [0, 1, 0]$, $\beta = (\theta, \lambda, \sigma^2)^{'}$, $\beta_0
 $H_0: A(\beta - \beta_0) = 0$ contre $H_1: A(\beta-\beta_0) \neq 0$
 
 Sous $H_0$:
-
-<!-- \begin{equation} \label{eq16} -->
-<!-- \begin{split} -->
-<!-- \sqrt{n}(A\widehat\beta - A\beta_0) \rightarrow \mathcal{N}(0, AV_nA^{'}) -->
-<!-- \end{split} -->
-<!-- \end{equation} -->
 
 \begin{equation} \label{eq16}
 \begin{split}
@@ -303,10 +297,9 @@ n=50
 
 La condition de convergence indiquée dans la section 1 est bien vérifiée.
 
-
 En effet on a que si $x_1, x_2, \dots \stackrel{i.i.d}\sim \mathcal N(0, 1)$,
 
-\begin{equation}
+\begin{equation}\label{eq21}
 \begin{split}
   \frac{X'X}n = \frac 1 n 
                 \begin{bmatrix}
@@ -335,7 +328,7 @@ Le modèle linéaire simple donc est $z_i = \mu + \theta x_i + \sigma\varepsilon
 
 Par la définition, $\dfrac{y_i^{\lambda}-1}{\lambda} = h_{\lambda}(y_i) = z_i$, $y_i = (\lambda z_i+1)^{1/\lambda}$.
 
-```{r echo=FALSE}
+```{r echo=FALSE, include= TRUE}
 #Q1
 set.seed(999)
 X_obs <- rnorm(n) #loi gaussien centrée réduite
@@ -368,7 +361,7 @@ En Traçant la profondeur ajustée en fonction de la profondeur observée, on pe
 Par la définition, les résidus $\widehat\varepsilon = Z-X\widehat\theta$. Et les résidus studentisés donc est $t_i = \dfrac{\widehat\varepsilon_i}{\widehat\sigma \sqrt{1-h_{i,i}}}$ où $h_{i,i}$ sont les éléments diagonaux de $H = X(X^{'}X)^{-1}X^{'}$.
 
 
-```{r echo=FALSE}
+```{r echo=FALSE, include=TRUE}
 #Etudier les résidus 
 residus <- Z - X%*%theta_est
 {plot(X%*%theta_est, residus, xlab = "vars ajustées", ylab = "les résidus",main="résidus bruts")
@@ -405,7 +398,7 @@ Lmle = function(Z){
 La variable $Q$ est $(I_n-H)$, où $I_n$ est la matrice identidé de taille $50\times 50$, $H = X(X^{'}X)^{-1}X^{'}$. Le variable $sig2$ égale à $\dfrac{h_{\lambda}(Y)^{'}(I_n-H)h_{\lambda}(Y)}{n}$ qui est exactement $\widehat\sigma^2$ où on a démontré dans l'équation (\ref{eq3}). La fonction $Lmle$ retourne le terme $-\dfrac{n}{2}\log(\widehat\sigma^2)$.
 
 
-```{r echo=FALSE}
+```{r echo=FALSE, include=TRUE}
 # Coder la fonction lmin(lambda, Y) qui calcule −Lmax.
 vec1 = rep(1, 50)
 Lmin = function(lambda, Y=Y) {
@@ -431,7 +424,7 @@ On voit bien que la fonction $-L_{max}$ est une fonction quadratique convexe, au
 
 ```{r echo=FALSE, warning=FALSE}
 resopt = nlm(Lmin,Y=Y,p=2,hessian=TRUE)
-lambda_est <- 0.3817253
+lambda_est <- resopt$estimate
 var_lambda_est <- 1/resopt$hessian
 ```
 
@@ -442,13 +435,13 @@ Etant donné que $Z=h_{\lambda}(Y)$ est la transformation de $Y$, par la défini
 
 ### Intervale de confiance
 
-Comme on a montré dans le premier section, l'intervalle de confiance pour $\lambda$ est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\dfrac{\widehat{Var(\widehat{\lambda})}}{n}}]$ au niveau asymptotiquement $1-\alpha$. Ici on fixe $\alpha$ à $0.05$, donc $q_{1-\alpha/2}$ est $1.959964$ la quantile d'ordre $1-\alpha/2$ sous loi normale, donc on obtien l'IC $[0.3341304, 0.4293202]$.
+Comme on a montré dans le premier section, l'intervalle de confiance pour $\lambda$ est $[\widehat{\lambda} - q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}, \widehat{\lambda} + q_{1-\alpha/2} \sqrt{\widehat{Var(\widehat{\lambda})}}]$ au niveau asymptotiquement $1-\alpha$. Ici on fixe $\alpha$ à $0.05$, donc $q_{1-\alpha/2}$ est $1.959964$ la quantile d'ordre $1-\alpha/2$ sous loi normale, donc on obtien l'IC $[0.04517863, 0.718272]$.
 
 ```{r message=FALSE, include=FALSE}
 alpha <- 0.05
 q <- qnorm(1-alpha/2)
-lambda_est - q*sqrt(var_lambda_est/n) #lower bound
-lambda_est + q*sqrt(var_lambda_est/n) #upper bound
+lambda_est - q*sqrt(var_lambda_est) #lower bound
+lambda_est + q*sqrt(var_lambda_est) #upper bound
 ```
 
 
@@ -457,7 +450,7 @@ lambda_est + q*sqrt(var_lambda_est/n) #upper bound
 ```{r warning=FALSE, include=FALSE}
 q_chi <- qchisq(1-alpha, df=1) #quantile
 q_chi
-lambda_0 <- c(1, 2, 0.3, 0)
+lambda_0 <- c(1, 1/2, 0.3, 0)
 lambda_0
 W_obs <-  (lambda_est - lambda_0)^2 / var_lambda_est
 W_obs
@@ -468,9 +461,9 @@ p_value-alpha>0 # conserve H_0?
 
 Das l'équation (\ref{eq17}), on a montré $W = \dfrac{(\widehat\lambda - \lambda_0)^2}{\widehat{Var(\widehat\lambda)}} \rightarrow \chi^2(1)$. Donc on veut tester $H_0 : \lambda = \lambda_0$, contre $H_1: \lambda \neq \lambda_0$ par la statistique de Wald pour les quatres cas ci-dessous:
 
-1) Par la définition de $h_{\lambda}(Y)$, quand $\lambda = 1$, les données $Y$ ne nécessitent pas de transformation, donc dans le test $\lambda_0=1$. On a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilartère à droite), et p-valeur $3.173886e-04 < \alpha$, donc rejette $H_0$ et accèpte $H_1$ avec risque de premier espèce $\alpha = 5\%$.
+1) Par la définition de $h_{\lambda}(Y)$, quand $\lambda = 1$, les données $Y$ ne nécessitent pas de transformation, donc dans le test $\lambda_0=1$. On a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet (unilartère à droite), et p-valeur $0.4909476286 > \alpha$, donc rejette $H_1$ et accèpte $H_0$ avec risque de seconde espèce inconnue.
 
-2) De même raison, quand $\lambda = 2$, la transformation à appliquer aux observations est en racine carrée. Donc dans le test on veut $\lambda_0 = 2$. On a $W_{obs} > q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilartère à droite), et p-valeur $4.324529e-21 < \alpha$, donc rejette $H_0$ et accèpte $H_1$ avec risque de premier espèce $\alpha = 5\%$.
+2) De même raison, quand $\lambda = 0.5$, la transformation à appliquer aux observations est en racine carrée. Donc dans le test on veut $\lambda_0 = 0.5$. On a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui se trouve dans la région de rejet (unilartère à droite), et p-valeur $4.324529e-21 > \alpha$, donc rejette $H_0$ et accèpte $H_1$ avec risque de premier espèce $\alpha = 5\%$.
 
 3) Quand $\lambda_0 = 3$, on a $W_{obs} < q_{1-\alpha}^{\chi^2}$ qui ne se trouve pas dans la région de rejet, et p-valeur $6.341116e-01 > \alpha$, donc rejette $H_1$ et accèpte $H_0$ avec risque de seconde espèce inconnue.
 
@@ -482,8 +475,8 @@ Bien que les quatres valeurs ne se trouvent pas dans l'IC que l'on a calculé, m
 
 ## 5. Test de rapport de vraisemblance
 
-```{r echo=FALSE, warning=FALSE}
-lambda_0[4] <- 0.01
+```{r echo=FALSE, message=TRUE, include=TRUE}
+lambda_0[4] <- 0.000001
 for(i in 1:4){
   print(paste("lambda=", lambda_0[i]))
   TRV <- 2 *(Lmin(lambda_0[i], Y) - Lmin(lambda_est, Y))
@@ -497,22 +490,23 @@ for(i in 1:4){
 
 Par l'équation (\ref{eq20}), $TRV$ suit une loi $\chi^2(1)$, donc de même façon on calcule les $TRV$ observés et les p-valeurs. De même façon d'analyser les résultats calculés, les conclusions sont mêmes que ce qui donées par le test Wald dans question précédente.
 
-## 6.
+## 6. Vérification par fonction "powerTransform"
 
-```{r echo=FALSE}
-#install.packages("car")
-#install.packages("MASS")}
+Etant donné que l'on a toujours des problèmes sur l'installation du package "car", on l'exécute sur compilateur en ligne et voici dessous les résultats obtenus.
+
+![powerTransform](powerTransform_online.jpg)
 
 
+On peut voir que l'estimateur de la puissance transformation appliquée sur $Y$ est le même valeur que l'on a obtenu par maximation le vraisemblance $L_{max}$ calculé par $nlm$ dans la question 3. Puis l'intervalle de confiance $[0.0452, 0.7183]$ est identique que l'on calcule dans question 4 au niveau asymptotique $\alpha =0.05$. Comme on a montré dans question 5, $TRV \sim \chi^2(1)$, pour $\lambda = 1$ et $\lambda = 0$, notre $TRV$ observés et les p-valeurs sont les même que les résultats donnés par fonction $powerTransform$.
 
-```
+
 
 
 <!-------------------------------------- EX3 ------------------------------------------------------------------->
 <!-------------------------------------- -- -------------------------------------------------------------------->
 # 3 Cas pratique
 
-```{r echo=FALSE}
+```{r include=FALSE}
 # Lire les données, vérfier que le data.frame obtenu comporte 27 observations.
 df = read.csv2("NbCycleRupture.csv")
 head(df)
@@ -525,53 +519,23 @@ str(df) #structure de data frame
 On définit le modèle linéaire multiple ($M1$) $y = \mu + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \sigma\varepsilon$, $\varepsilon \sim \mathcal{N}(0, I_n)$ i.i.d.
 
 ```{r echo=FALSE}
-res1=lm(y~.,data=df)
+res1 <- lm(y~.,data=df) #M1
 summary(res1)
 
-#matrice du plan d'expérience
-X = as.matrix(cbind(1,df[-1])) # retirer la première colonne
-Y = as.matrix(df$y) #observation de Y
-
-#estimateur de theta
-theta.est = solve(t(X)%*%X)%*% t(X)%*%Y # t(X) transposée de X
-n = length(Y)
-p = ncol(X)
-#estimateur sans biais de sigma
-sigma.est = sqrt( sum( (X%*%theta.est -Y)^2 ) / (n-p) ) 
-
-#estimation de variance sur l'estimateur de theta
-V = solve(t(X)%*%X) *sigma.est^2
-# ecart type sur l'estimateur de theta
-stddev = sqrt(diag(V))
-
-{plot(Y, X%*%theta.est, xlab = "Valeurs observées",ylab = "Valeurs ajustées")
+{plot(df$y, res1$fitted,main="ajustés/observés")
 abline(0, 1)}
-
-theta.est
 
 ########################################
 longueur <- 50*df$x1+300
 amplitude <- df$x2+9
 chargement <- df$x3*5 + 45
 
-X2 <- as.matrix(cbind(1, longueur, amplitude, chargement))
+res2=lm(y~ longueur + amplitude +chargement,data=df) #M1
+summary(res2)
 
-#estimateur de theta
-theta.est2 = solve(t(X2)%*%X2)%*% t(X2)%*%Y # t(X) transposée de X
-n = length(Y)
-p = ncol(X2)
-#estimateur sans biais de sigma
-sigma.est2 = sqrt( sum( (X2%*%theta.est2 -Y)^2 ) / (n-p) ) 
 
-#estimation de variance sur l'estimateur de theta
-V2 = solve(t(X2)%*%X2) *sigma.est2^2
-# ecart type sur l'estimateur de theta
-stddev2 = sqrt(diag(V2))
-
-{plot(Y, X2%*%theta.est2, xlab = "Valeurs observées",ylab = "Valeurs ajustées")
+{plot(df$y, res2$fitted,main="ajustés/observés")
 abline(0, 1)}
-
-theta.est2
 
 ```
 
@@ -580,18 +544,27 @@ theta.est2
 
 
 ```{r echo=FALSE}
-res2 <- lm(formula = Y ~ df$x1 + df$x2 + df$x3 + I(df$x1^2) + I(df$x2^2) + I(df$x3^2) + I(df$x1*df$x2) + I(df$x1*df$x3) + I(df$x2*df$x3))
+res3 <- lm(y~ df$x1 + df$x2 + df$x3 + I(df$x1^2) + I(df$x2^2) + I(df$x3^2) + I(df$x1*df$x2) + I(df$x1*df$x3) + I(df$x2*df$x3), data=df) #M2
 
-{plot(res2$fitted,df$y,main="ajustés/observés")
+summary(res3)
+
+{plot(res3$fitted,df$y,main="ajustés/observés")
 abline(0,1)}
 ```
 
 
 
+## 3.
+
+```{r}
+anova(res1, res3)
+```
+
 
 # Conclusion
 
-```{r echo=FALSE}
+
+```{r}
 #library(knitr)
 #purl("ZHANG-BRIDONNEAU.Rmd")
 ```
