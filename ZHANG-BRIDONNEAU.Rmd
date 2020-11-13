@@ -16,31 +16,41 @@ knitr::opts_chunk$set(include = FALSE)
 
 # Introduction
 
-
+On va étudier une transformations non linéaires et en particulier la transformation de Box-Cox régulièrement utilisé pour stabiliser la variance et corriger les asymétries des données. On va dans un premier temps étudier théoriquement cette transformation et comment obtenir les paramètres optimaux de cette transformation. Dans un second temps on testera notre transformation sur des données simulées puis nous terminerons par un cas pratique sur l'étude du nombre de cycles à rupture d'un fil peigné en fonction de certains paramètres.
 
 <!-------------------------------------- EX1 ------------------------------------------------------------------->
 <!-------------------------------------- -- -------------------------------------------------------------------->
 
 # 1 La transformation de Box-Cox
 
-## 1. (réfléchir un nom/titre)
+On s'intéresse au modèle d'observation $(x_i,Y_i)$:
 
-Si $\lambda = 0$, $h_{\lambda}(y) = log\ y$, $\forall y>0$.
+  \begin{equation}\label{mod} h_\lambda(Y_i)=Z_i=x_i\theta+\varepsilon_i,\;\varepsilon_i\stackrel{iid}\sim\mathcal N(0,\sigma^2)\end{equation}
 
-On a $(1)$ $h_{\lambda}(y) = x^{'} \theta + \varepsilon$, $\varepsilon \sim \mathcal{N}(0, \sigma I_n)$.
+où $(h_\lambda)$ est une famille de transformations paramétrées par $\lambda$.
 
--- (mon idée de solution)
+## 1. Etude de la tranformation de Box-Cox.
 
-La transformation $\tilde h_\lambda$ est valable seulement pour $y > 0$. De plus pour tout $\lambda \neq 0$, la transformation $\tilde h_\lambda$ est borné et donc la transformation ne peut pas être gaussienne. Pour $\lambda = 0$ on n'a pas ce problème grâce à la surjectivité du logarithme.
+Ici on s'intéresse à la transformation de Box-Cox définie par 
+
+$$\forall \lambda \in \mathbb R, \forall y > 0, \tilde h_\lambda(y)=
+   \begin{cases}
+      \frac{y^\lambda -1}\lambda \;\lambda\neq 0\\
+      \log y \;\lambda = 0
+   \end{cases}$$
+
+On remarque que théoriquement cette transformation est incompatible avec le modèle \ref{mod}. En effet la transformation $\tilde h_\lambda$ est valable seulement pour $y > 0$. De plus pour tout $\lambda \neq 0$, la transformation $\tilde h_\lambda$ est borné et donc la transformation ne peut pas être gaussienne. Pour $\lambda = 0$ on n'a pas ce problème grâce à la surjectivité du logarithme.
 
 Si toute les observations sont positives on peut quand même utiliser cette transformation car on perdra qu'une faible partie des données normalement dans la queue à gauche de la répartition. Par exemple si les données ne suivent pas une loi normale mais une loi beta de paramètre $\alpha=2,\beta=2.2$ et qu'on utilise la transformation de Box et Cox avec $\lambda=2$ on obtient:
 
-```{r}
+```{r, echo=FALSE, include=TRUE}
 lambda <- 2
 a <- 2
 b <- 2.2
 plot({function (x) dbeta(x, a, b)})
+title("Loi beta de paramètres alpha=2, beta=2.2")
 plot({function (x) (dbeta(x, a, b)^lambda - 1)/lambda}, -0.2, 1.2)
+title("La même loi beta après une transformation de Box et Cox avec lambda=2")
 ```
 
 
