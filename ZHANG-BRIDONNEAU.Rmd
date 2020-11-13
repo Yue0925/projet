@@ -49,10 +49,8 @@ Si toute les observations sont positives on peut quand même utiliser cette tran
 lambda <- 2
 a <- 2
 b <- 2.2
-plot({function (x) dbeta(x, a, b)})
-title("Loi beta de paramètres alpha=2, beta=2.2")
-plot({function (x) (dbeta(x, a, b)^lambda - 1)/lambda}, -0.2, 1.2)
-title("La même loi beta après une transformation de Box et Cox avec lambda=2")
+plot({function (x) dbeta(x, a, b)}, main = "Loi beta de paramètres alpha=2, beta=2.2", ylab="f(y)")
+plot({function (x) (dbeta(x, a, b)^lambda - 1)/lambda}, -0.2, 1.2, main = "La même loi beta après une transformation de Box et Cox avec lambda=2", ylab="h(f(y))")
 ```
 
 
